@@ -37,6 +37,9 @@ compose-lint:
 start:
 	DEBUG="application:*" npm run nodemon -- --watch .  --ext js,pug --exec npm run gulp -- server
 
+test:
+	npm test
+
 compose-check-types:
 	docker-compose run web npm run flow
 
