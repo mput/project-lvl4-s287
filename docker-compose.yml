@@ -1,0 +1,21 @@
+---
+
+version: '3.1'
+services:
+  web:
+    build: .
+    command: make start
+    network_mode: bridge
+    ports:
+      - "3000:3000"
+      - "8081:8081"
+    expose:
+      - "3000"
+    volumes:
+      - .:/code
+      - ./.bash_history:/root/.bash_history
+    environment:
+      - VIRTUAL_PORT=3000
+      - VIRTUAL_HOST=${HOST_NAME}
+      - LETSENCRYPT_HOST=${HOST_NAME}
+      - LETSENCRYPT_EMAIL=${EMAIL}
