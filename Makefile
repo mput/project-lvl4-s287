@@ -23,7 +23,7 @@ compose-build:
 	docker-compose build
 
 compose-test:
-	docker-compose run web make test
+	docker-compose run web npm test
 
 compose-bash:
 	docker-compose run web bash
