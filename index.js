@@ -4,6 +4,7 @@ import Pug from 'koa-pug';
 import Router from 'koa-router';
 import koaLogger from 'koa-logger';
 import serve from 'koa-static';
+import mount from 'koa-mount';
 import koaWebpack from 'koa-webpack';
 import bodyParser from 'koa-bodyparser';
 import session from 'koa-session';
@@ -35,7 +36,7 @@ export default () => {
     }
     return null;
   }));
-  app.use(serve(path.join(__dirname, '..', 'dist')));
+  app.use(mount ('/assets', serve(path.join(__dirname, 'dist'))));
 
   if (process.env.NODE_ENV === 'development') {
     koaWebpack({
