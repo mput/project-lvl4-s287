@@ -1,5 +1,12 @@
 language: node_js
 node_js:
-  - stable
-
+- stable
 script: make test
+deploy:
+  provider: heroku
+  api_key:
+    secure: qncuyuIEoBROTlo9iRbE0oAeAc0B/2wZ2+xQjNbITzkQnc/nC9lAJ6+elv9Q5a3hYaGKnlJOmBqUesZviR21yYctMk9q1tvbQQiaQIrRDg2+tSd4VkYZNqKRWLicSP0JxElK9pGtZY2klrUv5Xv9XASbdN/unccpS+xrTU9UjcpcWDh7js26eeMf7UOtdfpPFfizIRS5u9BWyScRny0GjcLI2516QEQqAI/aoca4dwpuWbsl0SQWmR4ohZaSzzBOTBf8qzUqAVwvhc0gMYwr0FDL5vP4LIzo4wOJ/aMdCyJPQLgsOaZCzrH4Obq7AkfpYkXfwYeKBMQFxqAisf8RNkwAIezdRx13cY4HWoyty4iRjAhZp6NloKzObU13/VphQYUuUa5EYJE79AfzUB5QA1SpGMB2wWN8nOW4HPauuhswXfnlV5sQ673Cdwf33GM1R5sSE9kV9ss+xMeTmno49ySpl7Pj7JA305+qY3vJFQy6HEFOO/20YsVK4klT4HkCBaflForLs0bJyPeBSRVJxQzB2lnC5YzfNwPz63gXOaBx8C1i0M7jqNH0aQUeMfYqmBKiuGcNTydqV/BD2VUI+xpABWcqGtf3+0czlaRx2SuoqoQ5XVk4lxeQz1hfi6A66hb5HOt5ry3VfPqd5ZH++COjMiSwJs35WUXbp+3FO2Y=
+  app: tasker-plan
+  run:
+    - 'make db-migrate'
+    - restart

@@ -16,6 +16,9 @@ compose-setup: prepare compose-build compose-install compose-db-setup
 compose-db-setup:
 	docker-compose run web npm run sequelize db:migrate
 
+db-migrate:
+	npm run sequelize db:migrate
+
 compose-kill:
 	docker-compose kill
 
@@ -35,7 +38,7 @@ compose-lint:
 	docker-compose run web npm run eslint .
 
 start:
-	DEBUG="application:*" npm run nodemon -- --watch .  --ext js,pug --exec npm run gulp -- server
+	DEBUG="application:*" NODE_ENV=development npm run nodemon -- --watch .  --ext js,pug --exec npm run gulp -- server
 
 test:
 	npm test
