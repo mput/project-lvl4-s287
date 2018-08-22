@@ -11,6 +11,8 @@ import session from 'koa-session';
 import flash from 'koa-flash-simple';
 import _ from 'lodash';
 import methodOverride from 'koa-methodoverride';
+import Rollbar from 'rollbar';
+
 
 import webpackConfig from './webpack.config';
 import addRoutes from './routes';
@@ -19,6 +21,18 @@ import container from './container';
 export default () => {
   const app = new Koa();
 
+  const rollbar = new Rollbar({
+    accessToken: process.env.ROLLBAR_TOKEN,
+    captureUncaught: true,
+    captureUnhandledRejections: true,
+  });
+  app.use(async (ctx, next) => {
+    try {
+      await next();
+    } catch (err) {
+      rollbar.error(err, ctx.request);
+    }
+  });
   app.keys = ['some secret hurr'];
   app.use(session(app));
   app.use(flash());
