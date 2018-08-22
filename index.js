@@ -36,7 +36,7 @@ export default () => {
     }
     return null;
   }));
-  app.use(mount ('/assets', serve(path.join(__dirname, 'dist'))));
+  app.use(mount('/assets', serve(path.join(__dirname, 'dist'))));
 
   if (process.env.NODE_ENV === 'development') {
     koaWebpack({
