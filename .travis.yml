@@ -9,4 +9,5 @@ deploy:
   app: tasker-plan
   run:
     - 'make db-migrate'
+    - 'make build'
     - restart

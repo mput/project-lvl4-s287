@@ -43,6 +43,9 @@ start:
 test:
 	npm test
 
+build:
+	npm run build
+
 compose-check-types:
 	docker-compose run web npm run flow
 
