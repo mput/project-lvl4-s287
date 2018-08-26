@@ -5,6 +5,7 @@ services:
   web:
     build: .
     command: make start
+    tty: true
     network_mode: bridge
     ports:
       - "3000:3000"
