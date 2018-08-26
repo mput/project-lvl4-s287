@@ -1,0 +1,32 @@
+extends /layouts/application.pug
+
+block content
+    main.container
+      // - const msg = flash.get()
+      // if msg
+      //   .alert.alert-info.m-3= msg
+      .row.mt-4
+        .col.d-flex
+          div.ml-auto
+            span.font-weight-normal Group By:
+            .btn-group.ml-1
+              button.btn.btn-outline-dark.btn-sm.dropdown-toggle(type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false") State
+                .dropdown-menu
+      //- container of group
+      .container-fluid.p-0
+        h2.h4.py-1.pl-2.text-warning.border-bottom.border-warning All tasks:
+        //- container of cards with tasks
+        .container
+          //- all cards should be in one row
+          .row.mt-4
+            .col-auto.pb-4
+              .card(style='width: 16rem;')
+                small.card-text.pt-2.pr-2.text-right.text-muted.font-weight-bold Due: 12.12.12
+                .card-text.py-0.pl-3.mt-1.text-white.bg-success In progress
+                .card-body
+                  h6.card-title Make laundry for today
+                  // p.mt-0.card-text Contrary to popular belief, Lorem Ipsum is not simply random text.
+                .card-footer.d-flex.py-2
+                  a.rounded-circle.p-2.font-weight-bold.badge-secondary.text-white(href='#' style='font-size: 0.8em;') MP
+                  button.ml-auto.btn.btn-outline-dark.btn-sm.dropdown-toggle(type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false") Change state
+                    .dropdown-menu

@@ -5,7 +5,10 @@ prepare:
 	touch .env
 
 compose:
-	docker-compose up
+	docker-compose up -d
+
+compose-logs:
+	docker-compose logs -f --tail="30"
 
 compose-install:
 	docker-compose run web npm install
@@ -38,7 +41,7 @@ compose-lint:
 	docker-compose run web npm run eslint .
 
 start:
-	DEBUG="application:*" NODE_ENV=development npm run nodemon -- --watch .  --ext js,pug --exec npm run gulp -- server
+	DEBUG="tasker*" NODE_ENV=development npm run nodemon -- --watch .  --ext js,pug --exec npm run gulp -- server
 
 test:
 	npm test

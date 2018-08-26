@@ -17,8 +17,15 @@ import Rollbar from 'rollbar';
 import webpackConfig from './webpack.config';
 import addRoutes from './routes';
 import container from './container';
+import { User } from './models';
+
+const { log } = container;
 
 export default () => {
+  log('starting server');
+  const productionMode = process.env.NODE_ENV === 'production';
+  const devMode = process.env.NODE_ENV === 'development';
+
   const app = new Koa();
 
   const rollbar = new Rollbar({
@@ -26,22 +33,44 @@ export default () => {
     captureUncaught: true,
     captureUnhandledRejections: true,
   });
+
   app.use(async (ctx, next) => {
     try {
       await next();
     } catch (err) {
-      rollbar.error(err, ctx.request);
+      ctx.status = err.status || 500;
+      ctx.body = err.message;
+      ctx.app.emit('error', err, ctx);
     }
   });
+
+  app.on('error', (err, ctx) => {
+    if (productionMode) {
+      rollbar.error(err, ctx.request);
+    }
+    log('Error %s', err.message);
+  });
+
+  app.use(mount('/assets', serve(path.join(__dirname, 'dist'))));
+
   app.keys = ['some secret hurr'];
   app.use(session(app));
   app.use(flash());
   app.use(async (ctx, next) => {
-    ctx.state = {
-      flash: ctx.flash,
-      isSignedIn: () => ctx.session.userId !== undefined,
-    };
+    ctx.state.flash = ctx.flash;
+    ctx.state.isSignedIn = !!ctx.session.userId || false;
+    if (ctx.state.isSignedIn) {
+      ctx.state.signedUser = await User.findById(ctx.session.userId);
+      log('User is signed');
+    } else {
+      log('User is\'t signed');
+    }
     await next();
+    if (ctx.status === 302 && ctx.method === 'GET') {
+      const msg = ctx.state.flash.get();
+      ctx.flash.set(msg);
+      log('Message was stored for redirected request. Message is %s', msg);
+    }
   });
   app.use(bodyParser());
   app.use(methodOverride((req) => {
@@ -50,11 +79,13 @@ export default () => {
     }
     return null;
   }));
-  app.use(mount('/assets', serve(path.join(__dirname, 'dist'))));
 
-  if (process.env.NODE_ENV === 'development') {
+  if (devMode) {
     koaWebpack({
       config: webpackConfig,
+      devMiddleware: {
+        logLevel: 'warn',
+      },
       hotClient: false,
     }).then((middleware) => {
       app.use(middleware);
@@ -81,5 +112,6 @@ export default () => {
     ],
   });
   pug.use(app);
+  log('Server is ready');
   return app;
 };

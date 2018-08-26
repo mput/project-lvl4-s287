@@ -1,7 +1,19 @@
 extends /layouts/application.pug
 
 block content
-  +formFor(f, { url: urlFor('session'), method: 'post' })
-    +input(f, 'email')
-    +input(f, 'password', { as: 'password' })
-    +button(f)
+  .row.justify-content-center
+    .mx-auto.col-sm-6
+      .shadow-sm.p-3.mb-5.bg-white.rounded
+        if error
+          +alert('<strong>Inorrect password or username</strong>. Try again.')
+        .card
+          .card-header
+            h4.mb-0 Log in
+          .card-body
+            +formFor(f, { url: urlFor('session'), method: 'post' })
+              +input(f, 'email')
+              +input(f, 'password', { as: 'password' })
+              +button(f, 'Sign up')
+          .card-footer.text-muted.text-center You can try it with
+            div
+              strong  admin@admin.com : admin

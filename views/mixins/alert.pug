@@ -1,0 +1,4 @@
+mixin alert(message, type = 'warning')
+  .alert.alert-dismissible.fade.show(class=`alert-${type}` role='alert')!= message
+    button.close(type='button' data-dismiss='alert' aria-label='Close')
+      span(aria-hidden='true') &times;

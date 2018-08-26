@@ -1,5 +1,12 @@
 - const getInputName = (f, property) => `${f.name}[${property}]`
 
+-
+  const validClassName = (f, property) => {
+    if (_.isEmpty(f.errors)) return '';
+    if (f.errors[property]) return 'is-invalid';
+    return 'is-valid';
+  };
+
 mixin formFor(f, options = {})
   - const url = _.get(options, 'url');
   - const method = _.get(options, 'method', 'get').toLowerCase();
@@ -10,13 +17,17 @@ mixin formFor(f, options = {})
     block
 
 mixin input(f, property, options = { as: 'text' })
+  - const label = options.label || _.capitalize(property)
   - const value = f.object[property] === undefined ? '' : f.object[property]
-  .form-group(class=(f.errors[property] && 'has-danger'))
-    label= property
-    input(name=getInputName(f, property) class='form-control' type=options['as'] value=`${value}`)
-    if f.errors[property]
-      .form-control-feedback= f.errors[property].map(({ message }) => message).join('. ')
+  .form-group.row(class=(f.errors[property] && 'has-danger'))
+    label.col-lg-3.col-form-label= label
+    .col-lg-9
+      input.form-control(name=getInputName(f, property) class=`${validClassName(f, property)}` type=options['as'] value=`${value}`)
+      if f.errors[property]
+        .invalid-feedback= f.errors[property].map(({ message }) => message).join('. ')
 
-mixin button(f, type = 'submit')
-  .form-group
-    input(class='btn' type=`${type}` value=`Save`)
+mixin button(f,value = 'Submit', type = 'submit')
+  .form-group.row
+    label.col-lg-3.col-form-label
+    .col-lg-9
+      input.btn.btn-primary(type=`${type}` value=`${value}`)

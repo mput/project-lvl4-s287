@@ -1,7 +1,9 @@
 extends /layouts/application.pug
 
 block content
-  .jumbotron.jumbotron-fluid
-    .container-fluid
-      h1.display-4 Hello world!
-      p.lead It's just example.
+  .jumbotron.mt-4
+    h1.display-4 Tasker plan
+    p.lead Tasker plan is simple task management solution.
+    hr.my-4
+    p It's still under development, but you can try what we already have.
+    a.btn.btn-primary.btn-lg(href=urlFor('newSession') role='button') Sign in

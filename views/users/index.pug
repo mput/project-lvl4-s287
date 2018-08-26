@@ -1,15 +1,34 @@
 extends /layouts/application.pug
 
 block content
-  table.table.table-stripped
-    thead
-      tr
-        th Full Name
-        th Email
-        th Created At
-    tbody
-      each user in users
-        tr
-          td= `${user.firstName} ${user.lastName}`
-          td= user.email
-          td= user.createdAt
+  main.container
+    .container-fluid.p-0
+      .d-flex.border-bottom.border-secondary.py-1.px-2
+        h2.d-inline.h4.text-secondary Users:
+        div.ml-auto.text-secondary
+          span.font-weight-bold Sort By:
+          .btn-group.ml-1
+            button.btn.btn-outline-dark.btn-sm.dropdown-toggle(type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false") State
+              .dropdown-menu
+      .container
+        table.mx-auto.table.table-hover.mt-3
+          thead.table-borderless
+            tr.border-top-0
+              th Name
+              th Mail
+              th Tasks
+          tbody
+            tr
+              td Maxim Putintsev
+              td
+                a(href='mailto:mail@got.com') huver@grg.com
+              td
+                a.btn.btn-primary(href='task' role='button')
+                  span.badge.badge-light 9
+                  |  Tasks
+            tr
+              td Maxim Putintsev
+              td
+                a(href='mailto:mail@got.com') huver@grg.com
+              td
+                a(href='task') Task list
