@@ -18,9 +18,9 @@ html(lang="en")
           .collapse.navbar-collapse#navbarSupportedContent
             ul.navbar-nav.ml-4
               li.nav-item
-                a.nav-link(href='tasks') Tasks
+                a.nav-link(href=urlFor('tasks')) Tasks
               li.nav-item
-                a.nav-link.active(href='users') Users
+                a.nav-link.active(href=urlFor('users')) Users
             ul.navbar-nav.ml-auto
               if signedUser
                 li.nav-item.dropdown.active
