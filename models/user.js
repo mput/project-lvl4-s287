@@ -6,9 +6,14 @@ export default (sequelize, DataTypes) => {
     lastName: DataTypes.STRING,
     email: {
       type: DataTypes.STRING,
-      unique: true,
+      unique: {
+        args: true,
+        msg: 'Email address already in use!',
+      },
       validate: {
-        isEmail: true,
+        isEmail: {
+          msg: 'That doesn\'t looks like an email address',
+        },
       },
     },
     passwordDigest: {
