@@ -8,7 +8,7 @@ compose:
 	docker-compose up -d
 
 compose-logs:
-	docker-compose logs -f --tail="30"
+	docker-compose logs -f --tail="30" web
 
 compose-install:
 	docker-compose run web npm install
@@ -21,6 +21,12 @@ compose-db-setup:
 
 db-migrate:
 	npm run sequelize db:migrate
+
+db-migrate-undo:
+	npm run sequelize db:migrate:undo
+
+db-migration-create:
+	npm run sequelize migration:create
 
 compose-kill:
 	docker-compose kill
