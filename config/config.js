@@ -3,6 +3,7 @@ module.exports = {
     database: 'database_development',
     dialect: 'sqlite',
     storage: './db.development.sqlite',
+    logging: console.log,
   },
   test: {
     database: 'database_test',
