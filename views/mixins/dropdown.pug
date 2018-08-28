@@ -1,0 +1,6 @@
+mixin dropdownGroup(name)
+  button.btn.btn-outline-dark.btn-sm.dropdown-toggle(type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false")= name
+  .dropdown-menu
+
+mixin dropdownItem(href, name)
+  a.dropdown-item(href=`${href}`)= name

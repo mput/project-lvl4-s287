@@ -1,7 +1,9 @@
 import buildFormObj from '../lib/formObjectBuilder';
 import { User } from '../models';
+import { reqAuth } from './commonMiddlewares';
 
-export default (router) => {
+export default (router, container) => {
+  const { log } = container;
   router
     .get('users', '/users', async (ctx) => {
       const users = await User.findAll();
@@ -21,6 +23,21 @@ export default (router) => {
         ctx.redirect(router.url('root'));
       } catch (e) {
         ctx.render('users/new', { f: buildFormObj(user, e) });
+      }
+    })
+    .get('editProfile', '/profile/edit', reqAuth('Please login to edit your profile!'), (ctx) => {
+      const { signedUser } = ctx.state;
+      ctx.render('users/profile', { f: buildFormObj(signedUser) });
+    })
+    .patch('editProfile', '/profile/edit', reqAuth(), async (ctx) => {
+      const { form } = ctx.request.body;
+      try {
+        await ctx.state.signedUser.update(form);
+        log('Update user profile');
+        ctx.flash.set('Profile has been updated');
+        ctx.redirect(router.url('editProfile'));
+      } catch (e) {
+        ctx.render('users/profile', { f: buildFormObj(form, e) });
       }
     });
 };
