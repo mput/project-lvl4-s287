@@ -1,0 +1,13 @@
+fixtures:
+  - model: User
+    data:
+      email: example@mail.com
+      firstName: John
+      lastName: Smithh
+      password: verystrongpassword
+  - model: User
+    data:
+      email: garry@mail.com
+      firstName: Garry
+      lastName: Washington
+      password: easyPassword

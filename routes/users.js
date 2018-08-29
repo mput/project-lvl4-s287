@@ -22,6 +22,7 @@ export default (router, container) => {
         ctx.session.userId = user.id;
         ctx.redirect(router.url('root'));
       } catch (e) {
+        ctx.status = 422;
         ctx.render('users/new', { f: buildFormObj(user, e) });
       }
     })
@@ -37,6 +38,7 @@ export default (router, container) => {
         ctx.flash.set('Profile has been updated');
         ctx.redirect(router.url('editProfile'));
       } catch (e) {
+        ctx.status = 422;
         ctx.render('users/profile', { f: buildFormObj(form, e) });
       }
     });

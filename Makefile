@@ -35,7 +35,10 @@ compose-build:
 	docker-compose build
 
 compose-test:
-	docker-compose run web npm test
+	docker-compose run web make test
+
+compose-test-watch:
+	docker-compose run web make test-watch
 
 compose-bash:
 	docker-compose run web bash
@@ -50,7 +53,10 @@ start:
 	DEBUG="tasker*" NODE_ENV=development npm run nodemon -- --watch .  --ext js,pug --exec npm run gulp -- server
 
 test:
-	npm test
+	DEBUG="tasker*" npm test
+
+test-watch:
+	DEBUG="tasker*" npm run -- test --watch
 
 build:
 	npm run build

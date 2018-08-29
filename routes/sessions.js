@@ -2,15 +2,17 @@ import buildFormObj from '../lib/formObjectBuilder';
 import { encrypt } from '../lib/secure';
 import { User } from '../models';
 
-export default (router) => {
+export default (router, container) => {
+  const { log } = container;
   router
     .get('newSession', '/session/new', async (ctx) => {
       const data = {};
       ctx.render('sessions/new', { f: buildFormObj(data) });
     })
     .post('session', '/session', async (ctx) => {
-      console.log(ctx.request.body);
       const { email, password } = ctx.request.body.form;
+
+      log('Try to log with %s', email);
       const user = await User.findOne({
         where: {
           email,
@@ -21,6 +23,7 @@ export default (router) => {
         ctx.redirect(router.url('tasks'));
         return;
       }
+      ctx.status = 422;
       ctx.render('sessions/new', { f: buildFormObj({ email }), error: true });
     })
     .delete('session', '/session', (ctx) => {
