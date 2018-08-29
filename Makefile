@@ -8,7 +8,7 @@ compose:
 	docker-compose up -d
 
 compose-logs:
-	docker-compose logs -f --tail="30" web
+	docker logs -f --tail=30 tp
 
 compose-install:
 	docker-compose run web npm install

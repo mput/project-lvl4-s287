@@ -9,11 +9,11 @@ export default (router, container) => {
       const users = await User.findAll();
       ctx.render('users', { users });
     })
-    .get('newUser', '/users/new', (ctx) => {
+    .get('newUser', '/u/new', (ctx) => {
       const user = User.build();
       ctx.render('users/new', { f: buildFormObj(user) });
     })
-    .post('users', '/users', async (ctx) => {
+    .post('newUser', '/u/new', async (ctx) => {
       const { form } = ctx.request.body;
       const user = User.build(form);
       try {
@@ -25,11 +25,11 @@ export default (router, container) => {
         ctx.render('users/new', { f: buildFormObj(user, e) });
       }
     })
-    .get('editProfile', '/profile/edit', reqAuth('Please login to edit your profile!'), (ctx) => {
+    .get('editProfile', '/u/edit', reqAuth('Please login to edit your profile!'), (ctx) => {
       const { signedUser } = ctx.state;
       ctx.render('users/profile', { f: buildFormObj(signedUser) });
     })
-    .patch('editProfile', '/profile/edit', reqAuth(), async (ctx) => {
+    .patch('editProfile', '/u/edit', reqAuth(), async (ctx) => {
       const { form } = ctx.request.body;
       try {
         await ctx.state.signedUser.update(form);

@@ -58,6 +58,8 @@ export default () => {
   app.use(flash());
   app.use(async (ctx, next) => {
     ctx.state.flash = ctx.flash;
+    ctx.state.path = ctx.path;
+    log('Path is %s', ctx.path);
     ctx.state.isSignedIn = !!ctx.session.userId || false;
     if (ctx.state.isSignedIn) {
       ctx.state.signedUser = await User.findById(ctx.session.userId);
