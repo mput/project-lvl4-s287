@@ -20,4 +20,4 @@ services:
       - VIRTUAL_HOST=${HOST_NAME}
       - LETSENCRYPT_HOST=${HOST_NAME}
       - LETSENCRYPT_EMAIL=${EMAIL}
-    container_name: tp
+    container_name: tasker-plan
