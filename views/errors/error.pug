@@ -1,0 +1,15 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset = 'utf-8')
+    meta(name='viewport', content="width=device-width, initial-scale=1, shrink-to-fit=no")
+    link(rel='stylesheet' href='/assets/style.css')
+    title Tasker Plan
+  body.bg-light
+    .d-flex.flex-row.align-items-center(style='min-height: 100vh')
+      .container
+        .row.justify-content-center
+          .col-md-12.text-center
+            span.display-1.d-block= status
+            .mb-4.lead= message
+            a.btn.btn-link(href=urlFor('root')) Back to Home
