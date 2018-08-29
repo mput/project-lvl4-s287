@@ -3,4 +3,4 @@ const reqAuth = (message = 'Require authorization') => async (ctx, next) => {
   await next();
 };
 
-export { reqAuth };
+export { reqAuth }; // eslint-disable-line

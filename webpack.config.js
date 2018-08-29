@@ -6,7 +6,7 @@ const autoprefixer = require('autoprefixer');
 module.exports = {
   mode: process.env.NODE_ENV || 'development',
   devtool: 'source-map',
-  entry: ['./src/index.js', './src/style.scss'],
+  entry: ['./src/index.js', './src/scss/style.scss'],
   output: {
     path: path.join(__dirname, 'dist'),
     filename: 'app.js',

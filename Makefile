@@ -7,6 +7,9 @@ prepare:
 compose:
 	docker-compose up -d
 
+compose-stop:
+	docker-compose stop
+
 compose-logs:
 	docker logs -f --tail=30 tasker-plan
 
@@ -46,8 +49,8 @@ compose-bash:
 compose-console:
 	docker-compose-npm run gulp console
 
-compose-lint:
-	docker-compose run web npm run eslint .
+lint:
+	npm run eslint .
 
 start:
 	DEBUG="tasker*" NODE_ENV=development npm run nodemon -- --watch .  --ext js,pug --exec npm run gulp -- server
