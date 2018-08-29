@@ -16,7 +16,11 @@
     "eslint": "eslint",
     "webpack": "webpack",
     "build": "npm run webpack -- -p --env production",
-    "postinstall": "npm run build"
+    "postinstall": "npm run build",
+    "precommit": "npm run eslint . && npm run test"
+  },
+  "precommit": {
+    "run": ["precommit"]
   },
   "author": "mPut",
   "license": "ISC",
@@ -75,6 +79,7 @@
     "eslint-plugin-jest": "^21.21.0",
     "jest": "^23.5.0",
     "nodemon": "^1.18.3",
+    "pre-commit": "^1.2.2",
     "sequelize-fixtures": "^0.7.0",
     "supertest": "^3.1.0"
   }
