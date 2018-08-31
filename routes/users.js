@@ -9,11 +9,11 @@ export default (router, container) => {
       const users = await User.findAll();
       ctx.render('users', { users });
     })
-    .get('newUser', '/u/new', (ctx) => {
+    .get('newUser', '/user/new', (ctx) => {
       const user = User.build();
       ctx.render('users/new', { f: buildFormObj(user) });
     })
-    .post('newUser', '/u/new', async (ctx) => {
+    .post('user', '/user', async (ctx) => {
       const { form } = ctx.request.body;
       const user = User.build(form);
       try {
@@ -26,17 +26,17 @@ export default (router, container) => {
         ctx.render('users/new', { f: buildFormObj(user, e) });
       }
     })
-    .get('editProfile', '/u/edit', reqAuth('Please login to edit your profile!'), (ctx) => {
+    .get('editUser', '/user/edit', reqAuth('Please login to edit your profile!'), (ctx) => {
       const { signedUser } = ctx.state;
       ctx.render('users/profile', { f: buildFormObj(signedUser) });
     })
-    .patch('editProfile', '/u/edit', reqAuth(), async (ctx) => {
+    .patch('/user', reqAuth(), async (ctx) => {
       const { form } = ctx.request.body;
       try {
         await ctx.state.signedUser.update(form);
         log('Update user profile');
         ctx.flash.set('Profile has been updated');
-        ctx.redirect(router.url('editProfile'));
+        ctx.redirect(router.url('editUser'));
       } catch (e) {
         ctx.status = 422;
         ctx.render('users/profile', { f: buildFormObj(form, e) });

@@ -17,7 +17,7 @@
     "webpack": "webpack",
     "build": "npm run webpack -- -p --env production",
     "postinstall": "npm run build",
-    "precommit": "npm run eslint . && npm run test"
+    "precommit": "make lint && make compose-test"
   },
   "precommit": {
     "run": ["precommit"]

@@ -8,7 +8,7 @@ block content
           .card-header
             h4.mb-0 Edit your profile
           .card-body
-            +formFor(f, { url: urlFor('editProfile'), method: 'patch' })
+            +formFor(f, { url: urlFor('user'), method: 'patch' })
               +input(f, 'email')
               +input(f, 'firstName', { label: 'First name' })
               +input(f, 'lastName', { label: 'Last name' })

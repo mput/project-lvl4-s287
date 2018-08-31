@@ -88,14 +88,14 @@ describe('route:users', () => {
   });
 
   it('get new user form', async (done) => {
-    const res = await request(app).get('/u/new');
+    const res = await request(app).get('/user/new');
     expect(res.status).toBe(200);
     done();
   });
 
   it('create new user (couldn\'t reuse email)', async (done) => {
     const res = await request(app)
-      .post('/u/new')
+      .post('/user')
       .type('form')
       .send({
         form: {
@@ -105,7 +105,7 @@ describe('route:users', () => {
     expect(res.status).toBe(302);
 
     const repeatRes = await request(app)
-      .post('/u/new')
+      .post('/user')
       .type('form')
       .send({
         form: {
@@ -116,10 +116,10 @@ describe('route:users', () => {
     done();
   });
   it('edit form unauthorized', async (done) => {
-    const getRes = await request(app).get('/u/edit');
+    const getRes = await request(app).get('/user/edit');
     expect(getRes.status).toBe(401);
     const patchRes = await request(app)
-      .patch('/u/edit')
+      .patch('/user')
       .type('form')
       .send({
         form: {
@@ -138,12 +138,12 @@ describe('route:users', () => {
     const cookie = authRes.header['set-cookie'];
 
     const res = await request(app)
-      .get('/u/edit')
+      .get('/user/edit')
       .set('Cookie', cookie);
     expect(res.status).toBe(200);
 
     const patchRes = await request(app)
-      .patch('/u/edit')
+      .patch('/user')
       .set('Cookie', cookie)
       .type('form')
       .send({
@@ -154,7 +154,7 @@ describe('route:users', () => {
     expect(patchRes.status).toBe(302);
 
     const patchWithUsedEmail = await request(app)
-      .patch('/u/edit')
+      .patch('/user')
       .set('Cookie', cookie)
       .type('form')
       .send({
