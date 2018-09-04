@@ -106,7 +106,7 @@ export default () => {
 
   const pug = new Pug({
     viewPath: path.join(__dirname, 'views'),
-    noCache: process.env.NODE_ENV === 'development',
+    noCache: devMode,
     debug: true,
     pretty: true,
     compileDebug: true,

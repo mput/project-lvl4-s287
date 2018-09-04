@@ -47,13 +47,13 @@ compose-bash:
 	docker-compose run web bash
 
 compose-console:
-	docker-compose-npm run gulp console
+	docker-compose run web npm run gulp console
 
 lint:
 	npm run eslint .
 
 start:
-	DEBUG="tasker*" NODE_ENV=development npm run nodemon -- --watch .  --ext js,pug --exec npm run gulp -- server
+	DEBUG="tasker*" NODE_ENV=development npm run nodemon -- --watch .  --ext js --exec npm run gulp -- server
 
 test:
 	DEBUG="tasker*" npm test
