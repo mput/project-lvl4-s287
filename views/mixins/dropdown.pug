@@ -1,6 +1,8 @@
 mixin dropdownGroup(name)
-  button.btn.btn-outline-dark.btn-sm.dropdown-toggle(type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false")= name
-  .dropdown-menu
+  .btn-group.ml-1
+    button.btn.btn-outline-dark.btn-sm.dropdown-toggle(type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false") State
+      .dropdown-menu.dropdown-menu-right
+        block
 
 mixin dropdownItem(href, name)
-  a.dropdown-item(href=`${href}`)= name
+  a.dropdown-item(href='3') Link !!!

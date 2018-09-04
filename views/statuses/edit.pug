@@ -1,0 +1,13 @@
+extends /layouts/application.pug
+
+block content
+  .row.justify-content-center
+    .mx-auto.col-sm-6
+      .shadow-sm.p-3.mb-5.bg-white.rounded
+        .card
+          .card-header
+            h4.mb-0 Edit status
+          .card-body
+            +formFor(f, { url: urlFor('status', id), method: 'patch' })
+              +input(f, 'name', { label: 'Status name' })
+              +button(f, 'Save')
