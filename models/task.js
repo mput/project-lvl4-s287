@@ -8,8 +8,8 @@ export default (sequelize, DataTypes) => {
   });
 
   Task.associate = (models) => {
-    Task.belongsTo(models.User, { as: 'creator' });
-    Task.belongsTo(models.User, { as: 'assignedTo' });
+    Task.belongsTo(models.User, { as: 'Creator' });
+    Task.belongsTo(models.User, { as: 'AssignedTo' });
     Task.belongsTo(models.Status);
   };
   return Task;

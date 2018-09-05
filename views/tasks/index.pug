@@ -12,9 +12,7 @@ block content
     .container.bg-white.border.border-top-0
       .row.pt-4.justify-content-around
         .col.flex-grow-0
-          button.btn.btn-primary New task
-        .col.flex-grow-0
-          button.btn.btn-primary New status
+          a.btn.btn-success(href=urlFor('newTask') role='button') New task
         .w-100.d-block.d-md-none.mt-4
         .col.ml-md-auto.flex-grow-0
           .d-flex.align-items-center
@@ -62,47 +60,35 @@ block content
                   button.btn.btn-primary Submit
 
       .container.mt-4
-        h2.h4.py-1.pl-2.text-primary.border-bottom.border-primary All tasks:
+        h2.h4.py-1.pl-2.border-bottom All tasks:
         table.table.table-borderless.mt-2
           thead
             tr
               th(scope='col')
               th(scope='col')
-              th(scope='col')
-              th(scope='col') Tags
+              // th(scope='col') Tags
               th(scope='col') Creator
               th(scope='col') Assigned to
               th(scope='col') Status
           tbody
-            tr.table-info.border-bottom.border-white
-              td del
-              td edit
-              td Make hachapury
-              td #hero, #super, #tasty
-              td MP
-              td KB
-              td.table-warning Ready
-            tr.table-info.border-bottom.border-white
-              td del
-              td edit
-              td Make hachapury
-              td #hero, #super, #tasty
-              td MP
-              td KB
-              td Ready
-            tr.table-info.border-bottom.border-white
-              td del
-              td edit
-              td Make hachapury
-              td #hero, #super, #tasty
-              td MP
-              td KB
-              td Ready
-            tr.table-info.border-bottom.border-white
-              td del
-              td edit
-              td Make hachapury
-              td #hero, #super, #tasty
-              td MP
-              td KB
-              td Ready
+            mixin taskRow(task)
+              - const { id, name, description, Creator, AssignedTo, Status } = task
+              tr.table-info.border-bottom.border-white
+                td
+                  .btn-group
+                    a.btn.btn-warning.btn-sm(href=urlFor('taskEdit', { id }) role='button') Edit
+                    a.btn.btn-danger.btn-sm(href=urlFor('task', { id }) role='button' data-method='delete' rel='nofollow') Delete
+                td
+                  h6= name
+                  p.mb-1= description
+                // td Tags...
+                td= Creator.fullName
+                td
+                  if AssignedTo
+                    = AssignedTo.fullName
+                  else
+                    Task is not assigned yet.
+                td.bg-info= Status.name
+
+            for task in tasks
+              +taskRow(task)

@@ -6,11 +6,11 @@ block content
       .shadow-sm.p-3.mb-5.bg-white.rounded
         .card
           .card-header
-            h4.mb-0 Create account
+            h4.mb-0 Create task
           .card-body
-            +formFor(f, { url: urlFor('newUser'), method: 'post' })
-              +input(f, 'email')
-              +input(f, 'firstName', { label: 'First name' })
-              +input(f, 'lastName', { label: 'Last name' })
-              +input(f, 'password', { as: 'password' })
-              +button(f, 'Sign up')
+            +formFor(f, { url: urlFor('tasks'), method: 'post' })
+              +input(f, 'name')
+              +textarea(f, 'description')
+              +select(f, 'StatusId', statuses, { label: 'Status' })
+              +select(f, 'AssignedToId', users.map(({ id, fullName }) => ({ id, name: fullName })), { label: 'Assigned To' })
+              +button(f, 'Create')

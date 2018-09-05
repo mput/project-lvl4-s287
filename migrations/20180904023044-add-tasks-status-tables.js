@@ -2,9 +2,9 @@ module.exports = {
   up: (queryInterface, Sequelize) => queryInterface.createTable('Tasks', {
     id: {
       allowNull: false,
+      autoIncrement: true,
       primaryKey: true,
-      type: Sequelize.UUID,
-      defaultValue: Sequelize.UUIDV4,
+      type: Sequelize.INTEGER,
     },
     name: {
       type: Sequelize.STRING,
@@ -31,6 +31,7 @@ module.exports = {
       onDelete: 'set null',
     },
     statusId: {
+      allowNull: false,
       type: Sequelize.INTEGER,
       references: {
         model: 'Statuses',

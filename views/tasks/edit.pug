@@ -1,0 +1,16 @@
+extends /layouts/application.pug
+
+block content
+  .row.justify-content-center
+    .mx-auto.col-sm-6
+      .shadow-sm.p-3.mb-5.bg-white.rounded
+        .card
+          .card-header
+            h4.mb-0 Edit task
+          .card-body
+            +formFor(f, { url: urlFor('task', id), method: 'patch' })
+              +input(f, 'name')
+              +textarea(f, 'description')
+              // +select(f, 'StatusId', statuses, { label: 'Status' })
+              // +select(f, 'AssignedToId', users.map(({ id, fullName }) => ({ id, name: fullName })), { label: 'Assigned To' })
+              +button(f, 'Edit')

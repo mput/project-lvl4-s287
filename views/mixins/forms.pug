@@ -17,6 +17,7 @@ mixin formFor(f, options = {})
     block
 
 mixin input(f, property, options = { as: 'text' })
+  // options could have property [as] to set Type of input, and property [label] to set custom label
   - const label = options.label || _.capitalize(property)
   - const value = f.object[property] === undefined ? '' : f.object[property]
   .form-group.row(class=(f.errors[property] && 'has-danger'))
@@ -26,8 +27,30 @@ mixin input(f, property, options = { as: 'text' })
       if f.errors[property]
         .invalid-feedback= f.errors[property].map(({ message }) => message).join('. ')
 
+mixin textarea(f, property, options = { as: 'text' })
+  - const label = options.label || _.capitalize(property)
+  - const value = f.object[property] === undefined ? '' : f.object[property]
+  .form-group.row(class=(f.errors[property] && 'has-danger'))
+    label.col-lg-3.col-form-label= label
+    .col-lg-9
+      textarea.form-control(name=getInputName(f, property) class=`${validClassName(f, property)}`)= `${value}`
+      if f.errors[property]
+        .invalid-feedback= f.errors[property].map(({ message }) => message).join('. ')
+
 mixin button(f,value = 'Submit', type = 'submit')
   .form-group.row
     label.col-lg-3.col-form-label
     .col-lg-9
       input.btn.btn-primary(type=`${type}` value=`${value}`)
+
+mixin select(f, property, selections, options = { multiple: false })
+  // options could have boolean property [multiple], and property [label] to set custom label
+  - const label = options.label || _.capitalize(property)
+  .form-group.row(class=(f.errors[property] && 'has-danger'))
+    label.col-lg-3.col-form-label= label
+    .col-lg-9
+      select.custom-select(name=getInputName(f, property) class=`${validClassName(f, property)}`)
+        for option in selections
+          option(value=`${option.id}`)= option.name
+      if f.errors[property]
+        .invalid-feedback= f.errors[property].map(({ message }) => message).join('. ')
