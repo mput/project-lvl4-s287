@@ -1,5 +1,28 @@
 module.exports = {
-  up: (queryInterface, Sequelize) => queryInterface.createTable('Tasks', {
+  up: (queryInterface, Sequelize) => queryInterface.createTable('Statuses', {
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: Sequelize.INTEGER,
+    },
+    name: {
+      type: Sequelize.STRING,
+      allowNull: false,
+      unique: true,
+    },
+    discriptin: {
+      type: Sequelize.STRING,
+    },
+    createdAt: {
+      allowNull: false,
+      type: Sequelize.DATE,
+    },
+    updatedAt: {
+      allowNull: false,
+      type: Sequelize.DATE,
+    },
+  }).then(() => queryInterface.createTable('Tasks', {
     id: {
       allowNull: false,
       autoIncrement: true,
@@ -40,29 +63,6 @@ module.exports = {
       onDelete: 'cascade',
     },
 
-    createdAt: {
-      allowNull: false,
-      type: Sequelize.DATE,
-    },
-    updatedAt: {
-      allowNull: false,
-      type: Sequelize.DATE,
-    },
-  }).then(() => queryInterface.createTable('Statuses', {
-    id: {
-      allowNull: false,
-      autoIncrement: true,
-      primaryKey: true,
-      type: Sequelize.INTEGER,
-    },
-    name: {
-      type: Sequelize.STRING,
-      allowNull: false,
-      unique: true,
-    },
-    discriptin: {
-      type: Sequelize.STRING,
-    },
     createdAt: {
       allowNull: false,
       type: Sequelize.DATE,
