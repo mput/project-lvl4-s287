@@ -43,14 +43,18 @@ mixin button(f,value = 'Submit', type = 'submit')
     .col-lg-9
       input.btn.btn-primary(type=`${type}` value=`${value}`)
 
-mixin select(f, property, selections, options = { multiple: false })
+mixin select(f, property, options = { multiple: false })
   // options could have boolean property [multiple], and property [label] to set custom label
   - const label = options.label || _.capitalize(property)
   .form-group.row(class=(f.errors[property] && 'has-danger'))
     label.col-lg-3.col-form-label= label
     .col-lg-9
       select.custom-select(name=getInputName(f, property) class=`${validClassName(f, property)}`)
-        for option in selections
-          option(value=`${option.id}`)= option.name
+        block
       if f.errors[property]
         .invalid-feedback= f.errors[property].map(({ message }) => message).join('. ')
+
+mixin option(value, name, options = {})
+  - const { selected = false, disabled = false , hidden = false} = options
+  option(value=`${value}`, selected=selected, disabled=disabled, hidden=hidden)= name
+
