@@ -38,23 +38,25 @@ export default (router, container) => {
     .get('taskEdit', '/tasks/:id/edit', async (ctx) => {
       const { id } = ctx.params;
       try {
-        const task = await Task.findOne({
-          where: { id },
-          include: [
-            { model: User, as: 'AssignedTo' },
-            Status],
-        });
-        ctx.render('tasks/edit', { f: buildFormObj(task), id });
+        const task = await Task.findById(id);
+        const statuses = await Status.findAll();
+        const users = await User.findAll();
+        ctx.render('tasks/edit', { f: buildFormObj(task), statuses, users });
       } catch (e) {
-        // ctx.throw(404);
+        ctx.throw(e);
       }
     })
     .patch('task', '/tasks/:id', async (ctx) => {
       const { id } = ctx.params;
       const task = await Task.findById(id);
-      await task.destroy();
-      ctx.flash.set('Task has been deleted');
-      ctx.redirect(router.url('tasks'));
+      const { form } = ctx.request.body;
+      try {
+        await task.update(form);
+        ctx.flash.set('Task has been edited');
+        ctx.redirect(router.url('tasks'));
+      } catch (e) {
+        ctx.throw(e);
+      }
     })
     .delete('task', '/tasks/:id', async (ctx) => {
       const { id } = ctx.params;
