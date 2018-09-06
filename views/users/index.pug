@@ -1,31 +1,29 @@
 extends /layouts/application.pug
 
 block content
-  main.container
-    .container-fluid.p-0
-      .d-flex.border-bottom.border-secondary.py-1.px-2
-        h2.d-inline.h4.text-primary Users:
-        // div.ml-auto.text-secondary
-        //   span.font-weight-bold.mr-1 Sort By:
-        //   .btn-group
-        //     +dropdownGroup('name')
-        //     .dropdown-menu
-        //       +dropdownItem('email', 'wmail')
-        //       +dropdownItem('email', 'email')
-      .container
-        table.mx-auto.table.table-hover.mt-3
-          thead.table-borderless
-            tr.border-top-0
-              th Name
-              th Mail
-              // th Tasks
-          tbody
-            each user in users
-              tr
-                td= user.fullName
-                td
-                  a(href=`mailto:${user.email}`)= user.email
-                // tuser.fullName();d
-                //  user.fullName(); a.btn.btn-primary(href='task' role='button')
-                //  user.fullName();   span.badge.badge-light 9
-                //  user.fullName();   |  Tasks
+  .container.bg-white.border.rounded
+    h2.h4.mt-3.py-1.pl-2.border-bottom Users:
+      // div.ml-auto.text-secondary
+      //   span.font-weight-bold.mr-1 Sort By:
+      //   .btn-group
+      //     +dropdownGroup('name')
+      //     .dropdown-menu
+      //       +dropdownItem('email', 'wmail')
+      //       +dropdownItem('email', 'email')
+    .container
+      table.mx-auto.table.table-hover.mt-3
+        thead.table-borderless
+          tr.border-top-0
+            th Name
+            th Mail
+            // th Tasks
+        tbody
+          each user in users
+            tr
+              td= user.fullName
+              td
+                a(href=`mailto:${user.email}`)= user.email
+              // tuser.fullName();d
+              //  user.fullName(); a.btn.btn-primary(href='task' role='button')
+              //  user.fullName();   span.badge.badge-light 9
+              //  user.fullName();   |  Tasks

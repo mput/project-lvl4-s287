@@ -1,0 +1,43 @@
+extends /layouts/application.pug
+
+mixin statusCard(status)
+  - const { name = 'Ready', id, amount = 0 } = status
+  - const ammountMessage = amount === 1 ? `${amount} card` : `${amount} cards`
+  .card.text-center
+    .card-header.bg-info.text-white.h4= name
+    .card-body
+      if amount
+        p.card-text
+          | You have
+          |
+          a.badge.badge-light(href="#")=  ammountMessage
+          |  with status #[span.font-weight-bold= name].
+      else
+        p.card-text
+          | You didn't have any card with status #[span.font-weight-bold= name].
+      .btn-group
+        a.btn.btn-warning.btn-sm(href=urlFor('statusEdit', { id }) role='button') Edit
+        a.btn.btn-danger.btn-sm(href=urlFor('status', { id }) role='button' data-method='delete' rel='nofollow') Delete
+
+
+block content
+    .container.bg-white.border.rounded
+      .row.mt-4.mb-2
+        .col.flex-grow-0
+          button.btn.btn-success(data-toggle='modal' data-target='#addNewStatusModal') New status
+      h2.h4.py-1.pl-2.border-bottom Statuses:
+      .card-columns.mt-3
+        for status in statuses
+          +statusCard(status)
+
+    .modal.fade#addNewStatusModal(tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true')
+      .modal-dialog(role='document')
+        .modal-content
+            .modal-header
+              h4.mb-0 Add status
+              button.close(type='button' data-dismiss='modal' aria-label='Close')
+                span(aria-hidden='true') &times;
+            .modal-body
+              +formFor(f, { url: urlFor('statuses'), method: 'post' })
+                +input(f, 'name', { label: 'Status name' })
+                +button(f, 'Create')

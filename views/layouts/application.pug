@@ -3,6 +3,10 @@ include /mixins/alert.pug
 include /mixins/dropdown.pug
 
 - const isActive = (url) => _.startsWith(path, url) ? 'active' : '';
+mixin navLink(url, name)
+  li.nav-item
+    a.nav-link(class=isActive(url) href=url)!= name
+
 
 doctype html
 html(lang="en")
@@ -13,17 +17,16 @@ html(lang="en")
     title Tasker Plan
   body.bg-light(style='min-height: 100vh')
     .container-fluid.p-0.h-100
-      .container-fluid.bg-primary
+      .container-fluid.bg-dark
         nav.navbar.navbar-expand-md.navbar-dark.container
           a.navbar-brand(href='/') Tasker Plan
           button.navbar-toggler(type="button" data-toggle="collapse" data-target="#navbarSupportedContent")
             span.navbar-toggler-icon
           .collapse.navbar-collapse#navbarSupportedContent
             ul.navbar-nav.ml-4
-              li.nav-item
-                a.nav-link(class=isActive(urlFor('tasks')) href=urlFor('tasks')) Tasks
-              li.nav-item
-                a.nav-link(class=isActive(urlFor('users')) href=urlFor('users')) Users
+              +navLink(urlFor('tasks'), 'Tasks')
+              +navLink(urlFor('statuses'), 'Statuses')
+              +navLink(urlFor('users'), 'Users')
             ul.navbar-nav.ml-auto
               if signedUser
                 li.nav-item.dropdown.active
@@ -32,12 +35,10 @@ html(lang="en")
                     a.dropdown-item(href=urlFor('editUser')) My account
                     a.dropdown-item(href=urlFor('session') data-method='delete' rel='nofollow') Sign Out
               else
-                li.nav-item
-                  a.nav-link(class=isActive(urlFor('newSession')) href=urlFor('newSession')) Sign In
-                li.nav-item
-                  a.nav-link(class=isActive(urlFor('newUser')) href=urlFor('newUser')) Sign Up
+                +navLink(urlFor('newSession'), 'Sign In')
+                +navLink(urlFor('newUser'), 'Sign Up')
 
-      main.container.mt-4.pt-3
+      main.container.mt-4
         - const msg = flash.get()
         if msg
           +alert(msg, 'info')

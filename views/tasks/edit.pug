@@ -1,0 +1,22 @@
+extends /layouts/application.pug
+
+block content
+  - const isSelected = (foreignKey, id) => foreignKey === id;
+  .row.justify-content-center
+    .mx-auto.col-sm-6
+      .shadow-sm.p-3.mb-5.bg-white.rounded
+        .card
+          .card-header
+            h4.mb-0 Edit task
+          .card-body
+            +formFor(f, { url: urlFor('task', f.object.id), method: 'patch' })
+              +input(f, 'name')
+              +textarea(f, 'description')
+              +select(f, 'StatusId', { label: 'Status' })
+                for status in statuses
+                  +option(status.id, status.name, { selected: isSelected(f.object.StatusId, status.id) })
+              +select(f, 'AssignedToId', { label: 'Assigned To' })
+                for user in users
+                  +option(user.id, user.fullName, { selected: isSelected(f.object.AssignedToId, user.id) })
+                +option('', 'Not assigned', { selected: f.object.AssignedToId === Null })
+              +button(f, 'Save')

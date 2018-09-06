@@ -1,29 +1,82 @@
 extends /layouts/application.pug
 
 block content
-    main.container
-      .row.mt-4
-        .col.d-flex
-          div.ml-auto
-            span.font-weight-normal Group By:
-            .btn-group.ml-1
-              button.btn.btn-outline-dark.btn-sm.dropdown-toggle(type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false") State
-                .dropdown-menu
-      //- container of group
-      .container-fluid.p-0
-        h2.h4.py-1.pl-2.text-primary.border-bottom.border-primary All tasks:
-        //- container of cards with tasks
-        .container
-          //- all cards should be in one row
-          .row.mt-4
-            .col-auto.pb-4
-              .card(style='width: 16rem;')
-                small.card-text.pt-2.pr-2.text-right.text-muted.font-weight-bold Due: 12.12.12
-                .card-text.py-0.pl-3.mt-1.text-white.bg-success In progress
-                .card-body
-                  h6.card-title Make laundry for today
-                  // p.mt-0.card-text Contrary to popular belief, Lorem Ipsum is not simply random text.
-                .card-footer.d-flex.py-2
-                  a.rounded-circle.p-2.font-weight-bold.badge-secondary.text-white(href='#' style='font-size: 0.8em;') MP
-                  button.ml-auto.btn.btn-outline-dark.btn-sm.dropdown-toggle(type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false") Change state
-                    .dropdown-menu
+  .container-fluid.bg-light.p-0
+    ul.nav.nav-tabs
+      li.nav-item
+        a.nav-link.active(href='#') All tasks
+      li.nav-item
+        a.nav-link(href='#') My tasks
+      li.nav-item
+        a.nav-link(href='#') Tasks for me
+  .container.bg-white.border.border-top-0.rounded
+    .row.pt-4
+      .col.flex-grow-0
+        a.btn.btn-success(href=urlFor('newTask') role='button') New task
+      // .w-100.d-block.d-md-none.mt-4
+      // .col.ml-md-auto.flex-grow-0
+      //   .d-flex.align-items-center
+      //     span.text-nowrap.font-weight-normal Group By:
+      //     +dropdownGroup()
+      //       +dropdownItem()
+      // .col.ml-1.mr-2.flex-grow-0
+      //   .d-flex.align-items-center
+      //     span.text-nowrap.font-weight-normal Group By:
+      //     +dropdownGroup()
+      //       +dropdownItem()
+    .row.rounded-bottom.pt-3
+      .col
+        p.m-0
+          a.dropdown-toggle(data-toggle='collapse' href='#formCollapse' role='button' aria-expanded='false' aria-controls='formCollapse') Filters
+    .row.rounded-bottom.collapse#formCollapse
+      .col
+          form
+            .form-row
+              .col-md-4.mb-3
+                label.mr-2(for = assignedTo) Assigned to:
+                select.custom-select
+                  option choose:
+              .col-md-4.mb-3
+                label.mr-2(for = assignedTo) Status is:
+                select.custom-select
+                  option choose:
+              .col-md-4.mb-3
+                label.mr-2(for = assignedTo) Has tag:
+                select.custom-select
+                  option choose:
+              .col-md-4.mb-3
+                button.btn.btn-primary Apply
+    .container-fluid.p-0.mt-2
+      h2.h4.py-1.pl-2.border-bottom All tasks:
+      table.table.table-borderless.mt-2
+        thead
+          tr
+            th(scope='col')
+            th(scope='col')
+            // th(scope='col') Tags
+            th(scope='col') Creator
+            th(scope='col') Assigned to
+            th(scope='col') Status
+        tbody
+          mixin taskRow(task)
+            - const { id, name, description, Creator, AssignedTo, Status } = task
+            tr.table-info.border-bottom.border-white
+              td.align-middle
+                .btn-group
+                  a.btn.btn-warning.btn-sm(href=urlFor('taskEdit', { id }) role='button') Edit
+                  a.btn.btn-danger.btn-sm(href=urlFor('task', { id }) role='button' data-method='delete' rel='nofollow') Delete
+              td.w-50
+                h5.d-inline= name
+                p.d-inline.mb-1= description
+              // td Tags...
+              td= Creator.fullName
+              td
+                if AssignedTo
+                  = AssignedTo.fullName
+                else
+                  Task is not assigned yet.
+              td.align-middle.text-center.bg-info
+                p.h5.text-white= Status.name
+
+          for task in tasks
+            +taskRow(task)

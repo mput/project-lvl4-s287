@@ -1,2 +1,2 @@
 import 'bootstrap';
-import {} from 'jquery-ujs';
+import 'jquery-ujs';
