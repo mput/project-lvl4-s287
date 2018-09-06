@@ -5,6 +5,13 @@ export default (sequelize, DataTypes) => {
       allowNull: false,
     },
     description: DataTypes.TEXT,
+    AssignedToId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      set(val) {
+        this.setDataValue('AssignedToId', val === '' ? null : val);
+      },
+    },
   });
 
   Task.associate = (models) => {

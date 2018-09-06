@@ -13,7 +13,7 @@ module.exports = {
     description: {
       type: Sequelize.TEXT,
     },
-    creatorId: {
+    CreatorId: {
       type: Sequelize.INTEGER,
       allowNull: false,
       references: {
@@ -22,7 +22,7 @@ module.exports = {
       },
       onDelete: 'cascade',
     },
-    assignedToId: {
+    AssignedToId: {
       type: Sequelize.INTEGER,
       references: {
         model: 'Users',
@@ -30,7 +30,7 @@ module.exports = {
       },
       onDelete: 'set null',
     },
-    statusId: {
+    StatusId: {
       allowNull: false,
       type: Sequelize.INTEGER,
       references: {
