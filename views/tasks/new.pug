@@ -11,6 +11,12 @@ block content
             +formFor(f, { url: urlFor('tasks'), method: 'post' })
               +input(f, 'name')
               +textarea(f, 'description')
-              +select(f, 'StatusId', statuses, { label: 'Status' })
-              +select(f, 'AssignedToId', users.map(({ id, fullName }) => ({ id, name: fullName })), { label: 'Assigned To' })
+              +select(f, 'StatusId', { label: 'Status' })
+                for status in statuses
+                  +option(status.id, status.name)
+              +select(f, 'AssignedToId', { label: 'Assigned To' })
+                +option('', 'Choose user:', { disabled: true, selected: true , hidden: true})
+                for user in users
+                  +option(user.id, user.fullName)
+                +option('', 'Not assigned')
               +button(f, 'Create')

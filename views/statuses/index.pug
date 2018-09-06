@@ -21,15 +21,14 @@ mixin statusCard(status)
 
 
 block content
-    main.container
+    .container.bg-white.border.rounded
       .row.mt-4.mb-2
         .col.flex-grow-0
           button.btn.btn-success(data-toggle='modal' data-target='#addNewStatusModal') New status
       h2.h4.py-1.pl-2.border-bottom Statuses:
-      .container.mt-4
-        .card-columns
-          for status in statuses
-            +statusCard(status)
+      .card-columns.mt-3
+        for status in statuses
+          +statusCard(status)
 
     .modal.fade#addNewStatusModal(tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true')
       .modal-dialog(role='document')
