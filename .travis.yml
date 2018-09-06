@@ -8,5 +8,5 @@ deploy:
     secure: BdWjxBxpXMy+6Ol2gDsJ9blcbSMZ4K7KgD7LUKSoXLseGa5AU8UdANyDLJTXYVadRMZY4KULEXA3fCEPluOlmMnrh9r2g67Us/yrcy9AGdZBEms11LBH1T6j9eJOt+LGPSl407KQm0NhrenEMJi+K0zHDA9shEpHk1/ez99l2hqJ82b/pNEFM2AeCsB+5k2NGl3xfBXdtPg5JMP6kz8ATd0U97obXXjJ5SjYOQ9wyH/ClWNh7JlDJZ+R//16Im4Tv9dq9DetbH23wr42ynZjLzDXgigJGHLqmIcihO1uoPA/91Zj0RVsFA5gV46VUOBkSM6A/lfo6Gd2u1Yd9Zh4AmPOiy7EWeVy4YIhEYjgvtWpv0+4ITkHZcRi4HiJuu/clViCjd5w82fymB+ef2uYuDSxaebK+2vWIJSdhQe+n/0NojM4AVgXPd5I6E//AcgfBamsdr6jvH1QHaTilmLAbbPFrVvlMP637ubYAOp8BRFRmId6JhGksp4zIet2icsfq/gBIbMV5XBUs8WANvWmQJQj++MUlu1DXDBDsbIJNYKz1mP7f9di7Oin9DqmEBtcuwcsUDlo5+qjxq3YR1bkav8sFaWJvStq9b1Ko+9GZn1aGL7CcI22xAttjtbIOc069WIgu9BBylU5LhOb+0iQpNTkJdN3fv2fiTE0XHElCoc=
     app: tasker-plan
     run:
-      - make db-migrate
-      - restart
+      - "sleep 20s && make db-migrate"
+      - "restart"
