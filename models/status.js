@@ -15,8 +15,20 @@ export default (sequelize, DataTypes) => {
       },
     },
   });
+
   Status.associate = (models) => {
     Status.hasMany(models.Task);
+  };
+
+  Status.loadScopes = (models) => {
+    Status.addScope('withTasksCount', {
+      attributes: { include: [[sequelize.fn('COUNT', sequelize.col('Tasks.id')), 'tasksCount']] },
+      include: [{
+        model: models.Task,
+        attributes: [],
+      }],
+      group: ['Status.id'],
+    });
   };
 
   return Status;
