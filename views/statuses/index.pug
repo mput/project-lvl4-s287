@@ -3,11 +3,11 @@ extends /layouts/application.pug
 mixin statusCard(status)
   - const { name, id } = status
   - const tasksCount = status.get('tasksCount')
-  - const ammountMessage = tasksCount === 1 ? `${tasksCount} card` : `${tasksCount} cards`
+  - const ammountMessage = tasksCount === 1 ? `${tasksCount} task` : `${tasksCount} tasks`
   .card.text-center
     .card-header.bg-info.text-white.h4= name
     .card-body
-      if tasksCount
+      if tasksCount != 0
         p.card-text
           | You have
           |
