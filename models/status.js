@@ -1,5 +1,5 @@
 export default (sequelize, DataTypes) => {
-  const User = sequelize.define('Status', {
+  const Status = sequelize.define('Status', {
     name: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -15,5 +15,9 @@ export default (sequelize, DataTypes) => {
       },
     },
   });
-  return User;
+  Status.associate = (models) => {
+    Status.hasMany(models.Task);
+  };
+
+  return Status;
 };

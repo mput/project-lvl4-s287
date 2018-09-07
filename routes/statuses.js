@@ -1,6 +1,6 @@
 import { reqAuth } from './commonMiddlewares';
 import buildFormObj from '../lib/formObjectBuilder';
-import { Status } from '../models';
+import { Status, Task, sequelize } from '../models';
 
 export default (router, container) => {
   const { log } = container; // eslint-disable-line
@@ -8,7 +8,14 @@ export default (router, container) => {
     .use('/statuses', reqAuth()) // Authorization is required for all sub-routes
     .get('statuses', '/statuses', async (ctx) => {
       const status = Status.build();
-      const statuses = await Status.findAll();
+      const statuses = await Status.findAll({
+        attributes: { include: [[sequelize.fn('COUNT', sequelize.col('Tasks.id')), 'tasksCount']] },
+        include: [{
+          model: Task,
+          attributes: [],
+        }],
+        group: ['Status.id'],
+      });
       ctx.render('statuses/index', { f: buildFormObj(status), statuses });
     })
     .post('/statuses', async (ctx) => {
