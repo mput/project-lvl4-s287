@@ -50,22 +50,19 @@ export default (sequelize, DataTypes) => {
     User.addScope('withTasksCount', {
       attributes: {
         include: [
-          [sequelize.fn('COUNT', sequelize.col('createdTasks.id')), 'createdTasksCount'],
-          [sequelize.fn('COUNT', sequelize.col('assignedTasks.id')), 'assignedTasksCount'],
+          [sequelize.fn('COUNT', sequelize.fn('DISTINCT', sequelize.col('createdTasks.id'))), 'createdTasksCount'],
+          [sequelize.fn('COUNT', sequelize.fn('DISTINCT', sequelize.col('assignedTasks.id'))), 'assignedTasksCount'],
         ],
-        duplicating: false,
       },
       include: [{
         model: models.Task,
         as: 'createdTasks',
         attributes: [],
-        duplicating: false,
       },
       {
         model: models.Task,
         as: 'assignedTasks',
         attributes: [],
-        duplicating: false,
       }],
       group: ['User.id'],
     });
