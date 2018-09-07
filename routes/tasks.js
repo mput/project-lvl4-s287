@@ -13,7 +13,6 @@ export default (router, container) => {
           { model: User, as: 'AssignedTo' },
           Status],
       });
-      log('%O', tasks);
       ctx.render('tasks/index', { tasks });
     })
     .get('newTask', '/tasks/new', async (ctx) => {

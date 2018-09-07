@@ -16,14 +16,17 @@ block content
           tr.border-top-0
             th Name
             th Mail
-            // th Tasks
+            th Created tasks
+            th Assigned tasks
         tbody
           each user in users
+            - const createdTasksCount = user.get('createdTasksCount')
+            - const assignedTasksCount = user.get('assignedTasksCount')
             tr
               td= user.fullName
               td
                 a(href=`mailto:${user.email}`)= user.email
-              // tuser.fullName();d
-              //  user.fullName(); a.btn.btn-primary(href='task' role='button')
-              //  user.fullName();   span.badge.badge-light 9
-              //  user.fullName();   |  Tasks
+              td
+                a(href='#')= `${createdTasksCount} tasks`
+              td
+                a(href='#')= `${assignedTasksCount} tasks`

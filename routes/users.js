@@ -6,7 +6,7 @@ export default (router, container) => {
   const { log } = container;
   router
     .get('users', '/users', async (ctx) => {
-      const users = await User.findAll();
+      const users = await User.scope('withTasksCount').findAll();
       ctx.render('users', { users });
     })
     .get('newUser', '/user/new', (ctx) => {
