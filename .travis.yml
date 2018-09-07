@@ -1,6 +1,13 @@
 language: node_js
+env:
+  global:
+    - CC_TEST_REPORTER_ID=ae9671254533ce94ee4189cb0497c1ff2013601d6796dd777c351ef30f626937
 node_js:
 - stable
+before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
 script: make test
 deploy:
   provider: heroku
