@@ -6,7 +6,9 @@ services:
     build: .
     command: make start
     tty: true
-    network_mode: bridge
+    networks:
+      - tacker-back
+      - nginx-proxy
     ports:
       - "3000:3000"
       - "8081:8081"
@@ -21,3 +23,22 @@ services:
       - LETSENCRYPT_HOST=${HOST_NAME}
       - LETSENCRYPT_EMAIL=${EMAIL}
     container_name: tasker-plan
+
+  db:
+    networks:
+      - tacker-back
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_DB=tasker-plan
+      - POSTGRES_PASSWORD=${DB_PASS}
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    container_name: tasker-plan_db
+
+networks:
+  tacker-back:
+    driver: bridge
+  nginx-proxy:
+    external:
+      name: nginx-proxy

@@ -8,3 +8,4 @@ public/assets
 .bash_history
 .env
 /coverage/
+/postgres-data/

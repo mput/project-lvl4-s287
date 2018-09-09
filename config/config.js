@@ -1,9 +1,10 @@
 module.exports = {
   development: {
-    database: 'database_development',
-    dialect: 'sqlite',
-    storage: './db.development.sqlite',
-    logging: console.log,
+    database: 'tasker-plan',
+    dialect: 'postgres',
+    host: 'db',
+    username: 'root',
+    password: 'pgpass',
   },
   test: {
     database: 'database_test',

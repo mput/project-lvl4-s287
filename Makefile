@@ -53,7 +53,7 @@ lint:
 	npm run eslint .
 
 start:
-	DEBUG="tasker*" NODE_ENV=development npm run nodemon -- --watch .  --ext js --exec npm run gulp -- server
+	DEBUG="tasker*" NODE_ENV=development npm run nodemon -- --watch . --ignore postgres-data/  --ext js --exec npm run gulp -- server
 
 test:
 	DEBUG="tasker*" npm test
