@@ -1,6 +1,18 @@
 fixtures:
   - model: User
     data:
+      email: mput@me.com
+      firstName: Maxim
+      lastName: Putintsev
+      password: '12345'
+  - model: User
+    data:
+      email: admin@admin.com
+      firstName: Ivan
+      lastName: Dou
+      password: admin
+  - model: User
+    data:
       email: example@mail.com
       firstName: John
       lastName: Smithh
@@ -11,3 +23,74 @@ fixtures:
       firstName: Garry
       lastName: Washington
       password: easyPassword
+  - model: User
+    data:
+      email: gudini@mail.com
+      firstName: Garry
+      lastName: Gudini
+      password: easyPassword
+
+  - model: Status
+    data:
+      name: New
+  - model: Status
+    data:
+      name: In Work
+  - model: Status
+    data:
+      name: On Testing
+  - model: Status
+    data:
+      name: Ready
+  - model: Status
+    data:
+      name: Waiting
+
+
+  - model: Task
+    data:
+      name: Make coffee
+      description: Coffee is all you need
+      Status:
+        name: New
+      Creator:
+        email: admin@admin.com
+      AssignedTo:
+        email: mput@me.com
+  - model: Task
+    data:
+      name: Write tests
+      description: Everything is better with tests
+      Status:
+        name: Waiting
+      Creator:
+        email: mput@me.com
+      AssignedTo:
+        email: admin@admin.com
+  - model: Task
+    data:
+      name: Learn something new
+      Status:
+        name: Ready
+      Creator:
+        email: admin@admin.com
+      AssignedTo:
+        email: mput@me.com
+  - model: Task
+    data:
+      name: Assign task
+      description: Even to themself.
+      Status:
+        name: Waiting
+      Creator:
+        email: example@mail.com
+      AssignedTo:
+        email: admin@admin.com
+
+  - model: Task
+    data:
+      name: Or don't assign task
+      Status:
+        name: New
+      Creator:
+        email: example@mail.com
