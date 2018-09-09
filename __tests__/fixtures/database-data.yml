@@ -83,7 +83,7 @@ fixtures:
       Status:
         name: Waiting
       Creator:
-        email: example@mail.com
+        email: admin@admin.com
       AssignedTo:
         email: admin@admin.com
 
