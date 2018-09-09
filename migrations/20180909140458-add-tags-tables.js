@@ -28,7 +28,6 @@ module.exports = {
         model: 'Tasks',
         key: 'id',
       },
-      onDelete: 'set null',
     },
     TagId: {
       primaryKey: true,
@@ -38,7 +37,6 @@ module.exports = {
         model: 'Tags',
         key: 'id',
       },
-      onDelete: 'set null',
     },
     createdAt: {
       allowNull: false,
