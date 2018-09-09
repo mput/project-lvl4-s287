@@ -28,8 +28,18 @@ db-migrate:
 db-migrate-undo:
 	npm run sequelize db:migrate:undo
 
+db-migrate-test:
+	npm run sequelize db:migrate:undo:all
+	make db-migrate
+
 db-migration-create:
 	npm run sequelize migration:create
+
+compose-fill-db:
+	docker-compose run web make fil-db
+
+fill-db:
+	npm run gulp fill-db
 
 compose-kill:
 	docker-compose kill

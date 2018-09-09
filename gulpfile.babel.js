@@ -3,6 +3,9 @@
 import gulp from 'gulp';
 // import gutil from 'gulp-util';
 import repl from 'repl';
+import path from 'path';
+import sequelizeFixtures from 'sequelize-fixtures';
+
 import container from './container';
 import getServer from '.';
 import db from './models';
@@ -39,4 +42,10 @@ gulp.task('console', () => {
 
 gulp.task('server', (cb) => {
   getServer().listen(process.env.PORT || 3000, cb);
+});
+
+gulp.task('fill-db', async () => {
+  const fixtures = path.join(__dirname, '__tests__', 'fixtures', 'database-data.yml');
+  await sequelizeFixtures.loadFile(fixtures, db);
+  process.exit();
 });
