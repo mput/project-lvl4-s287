@@ -67,7 +67,7 @@ block content
                   a.btn.btn-danger.btn-sm(href=urlFor('task', { id }) role='button' data-method='delete' rel='nofollow') Delete
               td.w-50
                 h5.d-inline= name
-                p.d-inline.mb-1= description
+                p.d-inline.mb-1!= description
               // td Tags...
               td= Creator.fullName
               td

@@ -1,6 +1,28 @@
 import { reqAuth } from './commonMiddlewares';
 import buildFormObj from '../lib/formObjectBuilder';
-import { Task, User, Status } from '../models';
+import { Task, User, Tag, Status } from '../models'; // eslint-disable-line
+
+
+const normilizeTag = tag => tag.slice(1).toLowerCase();
+
+const findOrCreateTags = async (tagsStr) => {
+  const tagsSet = new Set(tagsStr.map(tag => normilizeTag(tag)));
+  const tags = await Promise.all([...tagsSet].map(tagName => Tag
+    .findOrCreate({ where: { name: tagName } })
+    .then(([{ id, name }]) => ({ id, name }))
+    .catch(() => null)));
+  return tags.filter(tag => !!tag)
+    .reduce((acc, { id, name }) => ({ ...acc, [name]: [id] }), {});
+};
+
+const buildTagsStringTemplate = async (string) => {
+  const tagRegexp = /#([\w-]+)/g;
+  const tagsWithId = await findOrCreateTags(string.match(tagRegexp) || []);
+  return string.replace(tagRegexp, (tag) => {
+    const id = tagsWithId[normilizeTag(tag)];
+    return id ? `<a href="<%= tagId_${id} %>">${tag}</a>` : tag;
+  });
+};
 
 export default (router, container) => {
   const { log } = container; // eslint-disable-line
@@ -23,14 +45,18 @@ export default (router, container) => {
     })
     .post('/tasks', async (ctx) => {
       const { form } = ctx.request.body;
-      const task = Task.build(form);
+      const { descriptionRaw } = form;
+      const descriptionTempleted = await buildTagsStringTemplate(descriptionRaw);
+      console.log(descriptionRaw);
+      console.log(descriptionTempleted);
+      const task = Task.build({ ...form, description: descriptionTempleted });
       task.setCreator(ctx.state.signedUser);
       try {
         await task.save();
-        log(task);
+        // log(task);
         ctx.redirect(router.url('tasks'));
       } catch (e) {
-        log('%o', e);
+        // log('%o', e);
         ctx.throw(e);
       }
     })
