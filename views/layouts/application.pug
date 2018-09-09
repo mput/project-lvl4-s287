@@ -5,7 +5,7 @@ include /mixins/dropdown.pug
 - const isActive = (url) => _.startsWith(path, url) ? 'active' : '';
 mixin navLink(url, name)
   li.nav-item
-    a.nav-link(class=isActive(url) href=url)!= name
+    a.nav-link(class=isActive(url) href=url)= name
 
 
 doctype html
