@@ -10,7 +10,7 @@ block content
           .card-body
             +formFor(f, { url: urlFor('tasks'), method: 'post' })
               +input(f, 'name')
-              +textarea(f, 'description')
+              +textarea(f, 'description', { help: 'You could use #tags in description!' })
               +select(f, 'StatusId', { label: 'Status' })
                 for status in statuses
                   +option(status.id, status.name)

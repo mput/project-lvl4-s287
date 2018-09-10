@@ -11,7 +11,7 @@ block content
           .card-body
             +formFor(f, { url: urlFor('task', f.object.id), method: 'patch' })
               +input(f, 'name')
-              +textarea(f, 'description')
+              +textarea(f, 'description', { help: 'You could use #tags in description!' })
               +select(f, 'StatusId', { label: 'Status' })
                 for status in statuses
                   +option(status.id, status.name, { selected: isSelected(f.object.StatusId, status.id) })
