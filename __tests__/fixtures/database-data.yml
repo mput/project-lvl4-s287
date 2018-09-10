@@ -33,6 +33,7 @@ fixtures:
   - model: Status
     data:
       name: New
+      default: true
   - model: Status
     data:
       name: In Work

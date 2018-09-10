@@ -10,4 +10,6 @@ block content
           .card-body
             +formFor(f, { url: urlFor('status', id), method: 'patch' })
               +input(f, 'name', { label: 'Status name' })
+              if !f.object.default
+                +checkbox(f, 'makeDefault', { label: 'Make default' })
               +button(f, 'Save')

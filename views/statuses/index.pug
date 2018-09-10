@@ -5,7 +5,10 @@ mixin statusCard(status)
   - const tasksCount = status.get('tasksCount')
   - const ammountMessage = tasksCount === 1 ? `${tasksCount} task` : `${tasksCount} tasks`
   .card.text-center
-    .card-header.bg-info.text-white.h4= name
+    .card-header.bg-info.text-white
+      h4= name
+      if status.default
+        span.badge.badge-dark default
     .card-body
       if tasksCount != 0
         p.card-text
@@ -41,4 +44,6 @@ block content
             .modal-body
               +formFor(f, { url: urlFor('statuses'), method: 'post' })
                 +input(f, 'name', { label: 'Status name' })
+                if !f.object.default
+                  +checkbox(f, 'makeDefault', { label: 'Make default' })
                 +button(f, 'Create')

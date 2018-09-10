@@ -27,6 +27,18 @@ mixin input(f, property, options = { as: 'text' })
       if f.errors[property]
         .invalid-feedback= f.errors[property].map(({ message }) => message).join('. ')
 
+mixin checkbox(f, property, options = { as: 'text' })
+  - const label = options.label || _.capitalize(property)
+  - const value = f.object[property] === undefined ? '' : f.object[property]
+  .form-group.row(class=(f.errors[property] && 'has-danger'))
+    .col-lg-3
+    .col-lg-9
+      .form-check
+        input.form-check-input(name=getInputName(f, property) class=`${validClassName(f, property)}` type='checkbox' checked=!!value)
+        label.form-check-label= label
+        if f.errors[property]
+          .invalid-feedback= f.errors[property].map(({ message }) => message).join('. ')
+
 mixin textarea(f, property, options = { as: 'text' })
   - const label = options.label || _.capitalize(property)
   - const value = f.object[property] === undefined ? '' : f.object[property]
@@ -34,6 +46,8 @@ mixin textarea(f, property, options = { as: 'text' })
     label.col-lg-3.col-form-label= label
     .col-lg-9
       textarea.form-control(name=getInputName(f, property) class=`${validClassName(f, property)}`)= `${value}`
+      if options.help
+        small= options.help
       if f.errors[property]
         .invalid-feedback= f.errors[property].map(({ message }) => message).join('. ')
 
