@@ -22,21 +22,21 @@ module.exports = {
   }).then(() => queryInterface.createTable('TasksTags', {
     TaskId: {
       primaryKey: true,
-      allowNull: false,
       type: Sequelize.INTEGER,
       references: {
         model: 'Tasks',
         key: 'id',
       },
+      onDelete: 'cascade',
     },
     TagId: {
       primaryKey: true,
-      allowNull: false,
       type: Sequelize.INTEGER,
       references: {
         model: 'Tags',
         key: 'id',
       },
+      onDelete: 'cascade',
     },
     createdAt: {
       allowNull: false,
