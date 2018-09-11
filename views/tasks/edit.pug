@@ -9,14 +9,11 @@ block content
           .card-header
             h4.mb-0 Edit task
           .card-body
-            +formFor(f, { url: urlFor('task', f.object.id), method: 'patch' })
+            +formFor(f, { url: urlFor('task', id), method: 'patch' })
               +input(f, 'name', { help: 'You could use #tags in name!' })
               +textarea(f, 'description')
               +select(f, 'StatusId', { label: 'Status' })
                 for status in statuses
                   +option(status.id, status.name, { selected: isSelected(f.object.StatusId, status.id) })
-              +select(f, 'AssignedToId', { label: 'Assigned To' })
-                for user in users
-                  +option(user.id, user.fullName, { selected: isSelected(f.object.AssignedToId, user.id) })
-                +option('', 'Not assigned', { selected: f.object.AssignedToId === Null })
+              +input(f, 'AssignedToEmail', { label: 'Assigned To', help: 'Specify an user email adress.' })
               +button(f, 'Save')
