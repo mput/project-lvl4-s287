@@ -46,7 +46,7 @@ export default (router, container) => {
             as: 'AssignedTo',
             querry: { where: { email: form.AssignedToEmail } },
             error: {
-              message: 'Cant find such user',
+              message: 'Can\'t find such user',
               path: 'AssignedToEmail',
             },
           });
