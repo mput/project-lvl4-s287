@@ -14,9 +14,5 @@ block content
               +select(f, 'StatusId', { label: 'Status' })
                 for status in statuses
                   +option(status.id, status.name)
-              +select(f, 'AssignedToId', { label: 'Assigned To' })
-                +option('', 'Choose user:', { disabled: true, selected: true , hidden: true})
-                for user in users
-                  +option(user.id, user.fullName)
-                +option('', 'Not assigned')
+              +input(f, 'AssignedToEmail', { label: 'Assigned To', help: 'Specify an user email adress.' })
               +button(f, 'Create')

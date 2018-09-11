@@ -24,16 +24,15 @@ fs
     db[model.name] = model;
   });
 
-Object.keys(db).forEach((modelName) => {
-  if (db[modelName].associate) {
-    db[modelName].associate(db);
-  }
-  if (db[modelName].loadScopes) {
-    db[modelName].loadScopes(db);
-  }
-});
-
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
+
+Object.keys(db).forEach((modelName) => {
+  ['associate', 'loadScopes', 'addMethods'].forEach((prop) => {
+    if (db[modelName][prop]) {
+      db[modelName][prop](db);
+    }
+  });
+});
 
 module.exports = db;
