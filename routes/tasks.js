@@ -29,7 +29,6 @@ export default (router, container) => {
           Tag,
           Status],
       });
-      console.log(replaceTagsWithTagLinks(tasks.description, tasks.Tags));
       ctx.render('tasks/index', { tasks, replaceTagsWithTagLinks });
     })
     .get('newTask', '/tasks/new', async (ctx) => {
@@ -42,7 +41,7 @@ export default (router, container) => {
       const { form } = ctx.request.body;
       const task = Task.build(form);
       task.setCreator(ctx.state.signedUser);
-      const tags = await findOrCreateTags(getTags(form.description));
+      const tags = await findOrCreateTags(getTags(form.name));
       try {
         await task.save();
         await linkTagsToTask(tags, task);
@@ -68,6 +67,8 @@ export default (router, container) => {
       const { form } = ctx.request.body;
       try {
         await task.update(form);
+        const tags = await findOrCreateTags(getTags(form.name));
+        await linkTagsToTask(tags, task);
         ctx.flash.set('Task has been edited');
         ctx.redirect(router.url('tasks'));
       } catch (e) {

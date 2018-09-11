@@ -24,6 +24,8 @@ mixin input(f, property, options = { as: 'text' })
     label.col-lg-3.col-form-label= label
     .col-lg-9
       input.form-control(name=getInputName(f, property) class=`${validClassName(f, property)}` type=options['as'] value=`${value}`)
+      if options.help
+        small= options.help
       if f.errors[property]
         .invalid-feedback= f.errors[property].map(({ message }) => message).join('. ')
 

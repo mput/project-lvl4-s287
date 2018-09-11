@@ -53,7 +53,6 @@ block content
           tr
             th(scope='col')
             th(scope='col')
-            // th(scope='col') Tags
             th(scope='col') Creator
             th(scope='col') Assigned to
             th(scope='col') Status
@@ -66,9 +65,8 @@ block content
                   a.btn.btn-warning.btn-sm(href=urlFor('taskEdit', { id }) role='button') Edit
                   a.btn.btn-danger.btn-sm(href=urlFor('task', { id }) role='button' data-method='delete' rel='nofollow') Delete
               td.w-50
-                h5.d-inline= name
-                p.d-inline.mb-1!= replaceTagsWithTagLinks(description, Tags)
-              // td Tags...
+                h5.d-inline!= replaceTagsWithTagLinks(name, Tags)
+                p.d-inline.mb-1= description
               td= Creator.fullName
               td
                 if AssignedTo

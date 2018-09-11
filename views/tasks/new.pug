@@ -9,8 +9,8 @@ block content
             h4.mb-0 Create task
           .card-body
             +formFor(f, { url: urlFor('tasks'), method: 'post' })
-              +input(f, 'name')
-              +textarea(f, 'description', { help: 'You could use #tags in description!' })
+              +input(f, 'name', { help: 'You could use #tags in name!' })
+              +textarea(f, 'description')
               +select(f, 'StatusId', { label: 'Status' })
                 for status in statuses
                   +option(status.id, status.name)
