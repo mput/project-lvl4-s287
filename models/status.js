@@ -14,6 +14,18 @@ export default (sequelize, DataTypes) => {
         },
       },
     },
+
+    default: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+      unique: {
+        args: true,
+        msg: 'There can be only one default status',
+      },
+      set(val) {
+        this.setDataValue('default', val === true ? val : null);
+      },
+    },
   });
 
   Status.associate = (models) => {
@@ -28,6 +40,12 @@ export default (sequelize, DataTypes) => {
         attributes: [],
       }],
       group: ['Status.id'],
+    });
+
+    Status.addScope('defaultScope', {
+      order: ['default', 'createdAt'],
+    }, {
+      override: true,
     });
   };
 

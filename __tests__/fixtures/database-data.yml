@@ -1,38 +1,39 @@
 fixtures:
   - model: User
     data:
-      email: mput@me.com
-      firstName: Maxim
-      lastName: Putintsev
+      email: johnson@me.com
+      firstName: Johnson
+      lastName: Hart
       password: '12345'
   - model: User
     data:
       email: admin@admin.com
-      firstName: Ivan
-      lastName: Dou
+      firstName: David
+      lastName: Smith
       password: admin
   - model: User
     data:
       email: example@mail.com
-      firstName: John
-      lastName: Smithh
+      firstName: Karen
+      lastName: Watkins
       password: verystrongpassword
   - model: User
     data:
       email: garry@mail.com
-      firstName: Garry
-      lastName: Washington
+      firstName: Billy
+      lastName: Evans
       password: easyPassword
   - model: User
     data:
       email: gudini@mail.com
-      firstName: Garry
-      lastName: Gudini
+      firstName: Judy
+      lastName: Mosely
       password: easyPassword
 
   - model: Status
     data:
       name: New
+      default: true
   - model: Status
     data:
       name: In Work
@@ -46,51 +47,91 @@ fixtures:
     data:
       name: Waiting
 
+  - model: Tag
+    data:
+      name: tasker-plan
+
+  - model: Tag
+    data:
+      name: tags
+  - model: Tag
+    data:
+      name: production
+  - model: Tag
+    data:
+      name: many
+  - model: Tag
+    data:
+      name: product
 
   - model: Task
     data:
-      name: Make coffee
-      description: Coffee is all you need
+      name: "Add tasks with #many #tags"
+      Tags:
+        - name: tags
+        - name: many
       Status:
         name: New
       Creator:
         email: admin@admin.com
       AssignedTo:
-        email: mput@me.com
+        email: johnson@me.com
   - model: Task
     data:
-      name: Write tests
-      description: Everything is better with tests
+      name: "#Tags are case insensitive"
+      Tags:
+        - name: tags
+        - name: many
+      Status:
+        name: New
+      Creator:
+        email: admin@admin.com
+      AssignedTo:
+        email: johnson@me.com
+
+  - model: Task
+    data:
+      name: "Prepare for #production"
+      description: Order servers.
+      Tags:
+        - name: production
       Status:
         name: Waiting
       Creator:
-        email: mput@me.com
+        email: johnson@me.com
       AssignedTo:
         email: admin@admin.com
+
   - model: Task
     data:
-      name: Learn something new
+      name: "Install the #product #production"
+      description: in the test/QA environment
+      Tags:
+        - name: product
+        - name: production
       Status:
         name: Ready
       Creator:
         email: admin@admin.com
       AssignedTo:
-        email: mput@me.com
+        email: johnson@me.com
   - model: Task
     data:
-      name: Assign task
-      description: Even to themself.
+      name: Assign user
+      Status:
+        name: New
+      Creator:
+        email: example@mail.com
+  - model: Task
+    data:
+      name: "Design the solution #product #tasker-plan"
+      description: Define users and workflow
+      Tags:
+        - name: product
+        - name: tasker-plan
       Status:
         name: Waiting
       Creator:
         email: admin@admin.com
       AssignedTo:
         email: admin@admin.com
-
-  - model: Task
-    data:
-      name: Or don't assign task
-      Status:
-        name: New
-      Creator:
-        email: example@mail.com

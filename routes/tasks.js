@@ -1,6 +1,21 @@
 import { reqAuth } from './commonMiddlewares';
 import buildFormObj from '../lib/formObjectBuilder';
-import { Task, User, Status } from '../models';
+import { Task, User, Tag, Status } from '../models'; // eslint-disable-line
+import { normilizeTag, getTags, replaceTagsWithTagLinks } from '../lib/tagUtils';
+
+const findOrCreateTags = async (tagsStr) => {
+  const tagsSet = new Set(tagsStr.map(tag => normilizeTag(tag)));
+  const tags = await Promise.all([...tagsSet].map(tagName => Tag
+    .findOrCreate({ where: { name: tagName } })
+    .then(([tag]) => tag)
+    .catch(() => null)));
+  return tags.filter(tag => !!tag);
+};
+
+const linkTagsToTask = async (tags, task) => {
+  await task.addTags(tags);
+};
+
 
 export default (router, container) => {
   const { log } = container; // eslint-disable-line
@@ -11,9 +26,10 @@ export default (router, container) => {
         include: [
           { model: User, as: 'Creator' },
           { model: User, as: 'AssignedTo' },
+          Tag,
           Status],
       });
-      ctx.render('tasks/index', { tasks });
+      ctx.render('tasks/index', { tasks, replaceTagsWithTagLinks });
     })
     .get('newTask', '/tasks/new', async (ctx) => {
       const task = Task.build();
@@ -25,12 +41,12 @@ export default (router, container) => {
       const { form } = ctx.request.body;
       const task = Task.build(form);
       task.setCreator(ctx.state.signedUser);
+      const tags = await findOrCreateTags(getTags(form.name));
       try {
         await task.save();
-        log(task);
+        await linkTagsToTask(tags, task);
         ctx.redirect(router.url('tasks'));
       } catch (e) {
-        log('%o', e);
         ctx.throw(e);
       }
     })
@@ -51,6 +67,8 @@ export default (router, container) => {
       const { form } = ctx.request.body;
       try {
         await task.update(form);
+        const tags = await findOrCreateTags(getTags(form.name));
+        await linkTagsToTask(tags, task);
         ctx.flash.set('Task has been edited');
         ctx.redirect(router.url('tasks'));
       } catch (e) {
