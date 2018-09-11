@@ -2,7 +2,7 @@ import { reqAuth } from './commonMiddlewares';
 import buildFormObj from '../lib/formObjectBuilder';
 import { Status } from '../models';
 
-const changeDefault = async (status) => {
+const makeDefault = async (status) => {
   const currentDefault = await Status.findOne({ where: { default: true } });
   if (currentDefault) await currentDefault.update({ default: null });
   await status.update({ default: true });
@@ -22,7 +22,7 @@ export default (router, container) => {
       const status = Status.build(form);
       try {
         await status.save();
-        if (form.makeDefault) await changeDefault(status);
+        if (form.makeDefault) await makeDefault(status);
         ctx.flash.set('Status has been created');
         ctx.redirect(router.url('statuses'));
       } catch (e) {
@@ -46,7 +46,7 @@ export default (router, container) => {
       try {
         const status = await Status.findById(id);
         await status.update(form);
-        if (form.makeDefault) await changeDefault(status);
+        if (form.makeDefault) await makeDefault(status);
         ctx.flash.set('Status has been updated');
         ctx.redirect(router.url('statuses'));
       } catch (e) {
