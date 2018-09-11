@@ -8,24 +8,24 @@ fixtures:
   - model: User
     data:
       email: admin@admin.com
-      firstName: David
-      lastName: Smith
+      firstName: Admin
+      lastName: Admin
       password: admin
   - model: User
     data:
-      email: example@mail.com
+      email: karen@mail.com
       firstName: Karen
       lastName: Watkins
       password: verystrongpassword
   - model: User
     data:
-      email: garry@mail.com
+      email: billy@mail.com
       firstName: Billy
       lastName: Evans
       password: easyPassword
   - model: User
     data:
-      email: gudini@mail.com
+      email: judy@mail.com
       firstName: Judy
       lastName: Mosely
       password: easyPassword
