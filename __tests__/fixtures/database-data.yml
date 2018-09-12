@@ -121,7 +121,7 @@ fixtures:
       Status:
         name: New
       Creator:
-        email: example@mail.com
+        email: billy@mail.com
   - model: Task
     data:
       name: "Design the solution #product #tasker-plan"

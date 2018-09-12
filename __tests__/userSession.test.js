@@ -20,6 +20,14 @@ afterEach(async (done) => {
   done();
 });
 
+const getCookie = async () => {
+  const authRes = await request(app)
+    .post('/session')
+    .type('form')
+    .send({ form: { email: 'admin@admin.com', password: 'admin' } });
+  return authRes.header['set-cookie'];
+};
+
 describe('Basic request', () => {
   it('GET 200', async (done) => {
     const res = await request(app).get('/');
@@ -49,7 +57,7 @@ describe('route:sessions', () => {
     const res = await request(app)
       .post('/session')
       .type('form')
-      .send({ form: { email: 'example@mail.com', password: 'verystrongpassword' } });
+      .send({ form: { email: 'admin@admin.com', password: 'admin' } });
     expect(res.status).toBe(302);
     done();
   });
@@ -58,18 +66,14 @@ describe('route:sessions', () => {
     const res = await request(app)
       .post('/session')
       .type('form')
-      .send({ form: { email: 'example@mail.com', password: 'wrongPassword' } });
+      .send({ form: { email: 'admin@admin.com', password: 'wrongPassword' } });
     expect(res.status).toBe(422);
     done();
   });
 
   it('delete session', async (done) => {
-    const authRes = await request(app)
-      .post('/session')
-      .type('form')
-      .send({ form: { email: 'example@mail.com', password: 'verystrongpassword' } });
-
-    const cookie = authRes.header['set-cookie'];
+    const cookie = await getCookie();
+    console.log(cookie);
     const res = await request(app)
       .delete('/session')
       .set('Cookie', cookie);
@@ -131,12 +135,7 @@ describe('route:users', () => {
   });
 
   it('edit form authorized', async (done) => {
-    const authRes = await request(app)
-      .post('/session')
-      .type('form')
-      .send({ form: { email: 'example@mail.com', password: 'verystrongpassword' } });
-    const cookie = authRes.header['set-cookie'];
-
+    const cookie = await getCookie();
     const res = await request(app)
       .get('/user/edit')
       .set('Cookie', cookie);
@@ -148,7 +147,7 @@ describe('route:users', () => {
       .type('form')
       .send({
         form: {
-          email: 'declan@mail.com', password: 'anotherpass', firstName: 'Dorian', lastName: 'Maried',
+          email: 'admin@admin.com', password: 'anotherpass', firstName: 'Dorian', lastName: 'Maried',
         },
       });
     expect(patchRes.status).toBe(302);
@@ -159,7 +158,7 @@ describe('route:users', () => {
       .type('form')
       .send({
         form: {
-          email: 'garry@mail.com', password: 'anotherpass', firstName: 'Dorian', lastName: 'Maried',
+          email: 'karen@mail.com', password: 'anotherpass', firstName: 'Dorian', lastName: 'Maried',
         },
       });
     expect(patchWithUsedEmail.status).toBe(422);
