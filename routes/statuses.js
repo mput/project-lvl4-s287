@@ -26,7 +26,6 @@ export default (router, container) => {
         ctx.flash.set('Status has been created');
         ctx.redirect(router.url('statuses'));
       } catch (e) {
-        ctx.status = 422;
         ctx.flash.set(e.message);
         ctx.redirect(router.url('statuses'));
       }
@@ -63,7 +62,6 @@ export default (router, container) => {
         ctx.flash.set('Status has been deleted');
         ctx.redirect(router.url('statuses'));
       } catch (e) {
-        ctx.status = 422;
         ctx.flash.set(e.message);
         ctx.redirect(router.url('statuses'));
       }

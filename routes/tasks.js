@@ -21,13 +21,7 @@ export default (router, container) => {
   router
     .use('/tasks', reqAuth()) // Authorization is required for all sub-routes
     .get('tasks', '/tasks', async (ctx) => {
-      const tasks = await Task.findAll({
-        include: [
-          { model: User, as: 'Creator' },
-          { model: User, as: 'AssignedTo' },
-          Tag,
-          Status],
-      });
+      const tasks = await Task.scope('withAssotiation').findAll();
       ctx.render('tasks/index', { tasks, replaceTagsWithTagLinks });
     })
     .get('newTask', '/tasks/new', async (ctx) => {

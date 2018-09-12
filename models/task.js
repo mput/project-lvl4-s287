@@ -27,6 +27,16 @@ export default (sequelize, DataTypes) => {
     Task.belongsToMany(models.Tag, { through: 'TasksTags' });
   };
 
+  Task.loadScopes = (models) => {
+    Task.addScope('withAssotiation', {
+      include: [
+        { model: models.User, as: 'Creator' },
+        { model: models.User, as: 'AssignedTo' },
+        models.Tag,
+        models.Status],
+    });
+  };
+
   Task.addMethods = (models) => {
     Task.prototype.setAssocitation = async function({ model, as, querry, error }) { // eslint-disable-line
       const association = await models[model].findOne(querry);
