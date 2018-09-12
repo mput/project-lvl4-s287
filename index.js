@@ -91,6 +91,7 @@ export default () => {
   }));
 
   if (devMode) {
+    app.use(koaLogger());
     koaWebpack({
       config: webpackConfig,
       devMiddleware: {
@@ -102,7 +103,6 @@ export default () => {
     });
   }
 
-  app.use(koaLogger());
   const router = new Router();
   addRoutes(router, container);
   app.use(router.allowedMethods());

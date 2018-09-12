@@ -66,10 +66,10 @@ start:
 	DEBUG="tasker*" NODE_ENV=development npm run nodemon -- --watch . --ignore postgres-data/  --ext js --exec npm run gulp -- server
 
 test:
-	DEBUG="tasker*" npm test
+	npm test
 
 test-watch:
-	DEBUG="tasker*" npm run -- test --watch
+	npm run -- test --watch
 
 build:
 	npm run build

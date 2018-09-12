@@ -8,6 +8,7 @@
     "collectCoverageFrom": [
       "**/*.{js,jsx}",
       "!**/node_modules/**",
+      "!**/postgres-data/**",
       "!**/dist/**",
       "!**/src/**",
       "!**/migrations/**",
@@ -20,7 +21,8 @@
     "gulp": "gulp",
     "sequelize": "sequelize",
     "nodemon": "nodemon",
-    "test": "jest --coverage",
+    "test": "jest",
+    "test-coverage": "jest --coverage",
     "babel-node": "babel-node",
     "start": "gulp server",
     "eslint": "eslint",

@@ -73,7 +73,6 @@ describe('route:sessions', () => {
 
   it('delete session', async (done) => {
     const cookie = await getCookie();
-    console.log(cookie);
     const res = await request(app)
       .delete('/session')
       .set('Cookie', cookie);
