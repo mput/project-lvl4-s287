@@ -3,12 +3,15 @@ extends /layouts/application.pug
 block content
   .container-fluid.bg-light.p-0
     ul.nav.nav-tabs
-      li.nav-item
-        a.nav-link.active(href='#') All tasks
-      li.nav-item
-        a.nav-link(href='#') My tasks
-      li.nav-item
-        a.nav-link(href='#') Tasks for me
+      +navLink(urlFor('getTasks', 'all'), 'All tasks')
+      +navLink(urlFor('getTasks', 'my'), 'My tasks')
+      +navLink(urlFor('getTasks', 'forme'), 'For me')
+      // li.nav-item
+      //   a.nav-link.active(href=urlFor('getTasks')) All tasks
+      // li.nav-item
+      //   a.nav-link(href=urlFor('getTasks', 'my')) My tasks
+      // li.nav-item
+      //   a.nav-link(href=urlFor('getTasks', 'forme')) Tasks for me
   .container.bg-white.border.border-top-0.rounded
     .row.pt-4
       .col.flex-grow-0

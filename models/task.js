@@ -46,6 +46,16 @@ export default (sequelize, DataTypes) => {
         models.Tag,
         models.Status],
     });
+    Task.addScope('assignedToUser', id => ({
+      include: [
+        { model: models.User, as: 'AssignedTo', where: { id } },
+      ],
+    }));
+    Task.addScope('createdByUser', id => ({
+      include: [
+        { model: models.User, as: 'Creator', where: { id } },
+      ],
+    }));
   };
 
   Task.addMethods = (models) => {

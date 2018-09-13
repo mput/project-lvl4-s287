@@ -3,6 +3,7 @@ include /mixins/alert.pug
 include /mixins/dropdown.pug
 
 - const isActive = (url) => _.startsWith(path, url) ? 'active' : '';
+
 mixin navLink(url, name)
   li.nav-item
     a.nav-link(class=isActive(url) href=url)= name
@@ -24,7 +25,7 @@ html(lang="en")
             span.navbar-toggler-icon
           .collapse.navbar-collapse#navbarSupportedContent
             ul.navbar-nav.ml-4
-              +navLink(urlFor('tasks'), 'Tasks')
+              +navLink(urlFor('getTasks'), 'Tasks')
               +navLink(urlFor('statuses'), 'Statuses')
               +navLink(urlFor('users'), 'Users')
             ul.navbar-nav.ml-auto
