@@ -39,6 +39,7 @@ export default (sequelize, DataTypes) => {
   };
 
   Task.loadScopes = (models) => {
+    const { Op } = models.Sequelize;
     Task.addScope('withAssotiation', {
       include: [
         { model: models.User, as: 'Creator' },
@@ -46,14 +47,29 @@ export default (sequelize, DataTypes) => {
         models.Tag,
         models.Status],
     });
-    Task.addScope('assignedToUser', id => ({
+    Task.addScope('assignedToUser', email => ({
       include: [
-        { model: models.User, as: 'AssignedTo', where: { id } },
+        { model: models.User, as: 'AssignedTo', where: { email } },
       ],
     }));
-    Task.addScope('createdByUser', id => ({
+    Task.addScope('createdByUser', email => ({
       include: [
-        { model: models.User, as: 'Creator', where: { id } },
+        { model: models.User, as: 'Creator', where: { email } },
+      ],
+    }));
+    Task.addScope('hasStatusId', StatusId => ({
+      where: { StatusId },
+    }));
+    Task.addScope('hasTags', tags => ({
+      include: [
+        {
+          model: models.Tag,
+          where: {
+            name: {
+              [Op.in]: tags,
+            },
+          },
+        },
       ],
     }));
   };

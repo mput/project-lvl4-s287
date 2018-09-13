@@ -6,47 +6,30 @@ block content
       +navLink(urlFor('getTasks', 'all'), 'All tasks')
       +navLink(urlFor('getTasks', 'my'), 'My tasks')
       +navLink(urlFor('getTasks', 'forme'), 'For me')
-      // li.nav-item
-      //   a.nav-link.active(href=urlFor('getTasks')) All tasks
-      // li.nav-item
-      //   a.nav-link(href=urlFor('getTasks', 'my')) My tasks
-      // li.nav-item
-      //   a.nav-link(href=urlFor('getTasks', 'forme')) Tasks for me
   .container.bg-white.border.border-top-0.rounded
     .row.pt-4
       .col.flex-grow-0
         a.btn.btn-success(href=urlFor('newTask') role='button') New task
-      // .w-100.d-block.d-md-none.mt-4
-      // .col.ml-md-auto.flex-grow-0
-      //   .d-flex.align-items-center
-      //     span.text-nowrap.font-weight-normal Group By:
-      //     +dropdownGroup()
-      //       +dropdownItem()
-      // .col.ml-1.mr-2.flex-grow-0
-      //   .d-flex.align-items-center
-      //     span.text-nowrap.font-weight-normal Group By:
-      //     +dropdownGroup()
-      //       +dropdownItem()
     .row.rounded-bottom.pt-3
       .col
         p.m-0
           a.dropdown-toggle(data-toggle='collapse' href='#formCollapse' role='button' aria-expanded='false' aria-controls='formCollapse') Filters
-    .row.rounded-bottom.collapse#formCollapse
+    .row.rounded-bottom.collapse#formCollapse(class= hasCustomFilter && 'show')
       .col
-          form
+        +formFor(f, { url: path })
             .form-row
               .col-md-4.mb-3
-                label.mr-2(for = assignedTo) Assigned to:
-                select.custom-select
-                  option choose:
+                label Assigned to:
+                +loneInput(f, 'assignedToUser', { pureNames: true })
               .col-md-4.mb-3
-                label.mr-2(for = assignedTo) Status is:
-                select.custom-select
-                  option choose:
+                label Status is:
+                +loneSelect(f, 'hasStatusId', { pureNames: true })
+                  +option('', 'Choose status:')
+                  for status in statuses
+                    +option(status.id, status.name, { selected: isSelectedOption(f.object.hasStatusId, status.id) })
               .col-md-4.mb-3
-                label.mr-2(for = assignedTo) Has tag:
-                select.custom-select
-                  option choose:
+                label Tags:
+                +loneInput(f, 'hasTags', { pureNames: true })
               .col-md-4.mb-3
                 button.btn.btn-primary Apply
     .container-fluid.p-0.mt-2

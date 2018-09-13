@@ -4,18 +4,61 @@ import buildFormObj from '../lib/formObjectBuilder';
 import { Task, User, Tag, Status } from '../models'; // eslint-disable-line
 import { normilizeTag, getTags, replaceTagsWithTagLinks } from '../lib/tagUtils';
 
-const findOrCreateTags = async (tagsStr) => {
-  const tagsSet = new Set(tagsStr.map(tag => normilizeTag(tag)));
-  const tags = await Promise.all([...tagsSet].map(tagName => Tag
+const findOrCreateTags = async (tags) => {
+  const tagsSet = new Set(tags.map(tag => normilizeTag(tag)));
+  const tagObjects = await Promise.all([...tagsSet].map(tagName => Tag
     .findOrCreate({ where: { name: tagName } })
     .then(([tag]) => tag)
     .catch(() => null)));
-  return tags.filter(tag => !!tag);
+  return tagObjects.filter(tag => !!tag);
 };
 
 const linkTagsToTask = async (tags, task) => {
-  await task.addTags(tags);
+  await task.setTags(tags);
 };
+
+const scopeBuilders = [
+  {
+    getMethod: email => ({ method: ['createdByUser', email] }),
+    path: 'my',
+    name: 'createdByUser',
+    valueProc: _.identity,
+  },
+  {
+    getMethod: email => ({ method: ['assignedToUser', email] }),
+    path: 'forme',
+    name: 'assignedToUser',
+    valueProc: _.identity,
+  },
+  {
+    getMethod: StatusId => ({ method: ['hasStatusId', StatusId] }),
+    name: 'hasStatusId',
+    valueProc: _.identity,
+  },
+  {
+    getMethod: tags => ({ method: ['hasTags', tags] }),
+    name: 'hasTags',
+    valueProc: tagStr => getTags(tagStr).map(tag => normilizeTag(tag)),
+  },
+  {
+    getMethod: () => 'defaultScope',
+    path: 'all',
+    name: 'defaultScope',
+    valueProc: _.identity,
+  },
+];
+
+const buildScopes = queries => Object.keys(queries)
+  .map((scopeName) => {
+    const scopeObj = _.find(scopeBuilders, scope => scope.name === scopeName);
+    const scopeValue = queries[scopeName];
+    if (!scopeObj || !scopeValue) {
+      return false;
+    }
+    const { getMethod, valueProc } = scopeObj;
+    return getMethod(valueProc(scopeValue));
+  })
+  .filter(scope => !!scope);
 
 export default (router, container) => {
   const { log } = container; // eslint-disable-line
@@ -32,21 +75,26 @@ export default (router, container) => {
         ctx.redirect(router.url('getTasks', 'all'));
         return;
       }
-      // const scopes = ['defaultScope'];
-      const mainScopes = [
-        { scope: { method: ['createdByUser', ctx.state.signedUser.id] }, path: 'my' },
-        { scope: { method: ['assignedToUser', ctx.state.signedUser.id] }, path: 'forme' },
-        { scope: 'defaultScope', path: 'all' },
-      ];
-      const mainScope = _.find(mainScopes,
+      const mainScopeObj = _.find(scopeBuilders,
         filter => filter.path === mainFilter.toLowerCase());
-      if (!mainScope) {
+      if (!mainScopeObj) {
         ctx.throw(404);
       }
-      log('Filter is %o, scope is %o ', mainFilter, mainScope.scope);
+      const mainScope = mainScopeObj.getMethod(ctx.state.signedUser.email);
+      log('MainFilter is %o, scope is %o ', mainFilter, mainScope);
+      log('Querry is %o', ctx.query);
+      const queries = { assignedToUser: '', hasStatusId: '', Tags: '', ...ctx.query, }; // eslint-disable-line
+      const additionatlScopes = buildScopes(queries);
 
-      const tasks = await Task.scope('withAssotiation', mainScope.scope).findAll();
-      ctx.render('tasks/index', { tasks, replaceTagsWithTagLinks });
+      const tasks = await Task.scope('withAssotiation', mainScope, ...additionatlScopes).findAll();
+      const statuses = await Status.findAll();
+      ctx.render('tasks/index', {
+        f: buildFormObj(queries),
+        tasks,
+        statuses,
+        hasCustomFilter: additionatlScopes.length > 0,
+        replaceTagsWithTagLinks,
+      });
     })
     .post('tasks', '/tasks', async (ctx) => {
       const { form } = ctx.request.body;

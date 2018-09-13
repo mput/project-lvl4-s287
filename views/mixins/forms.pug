@@ -74,3 +74,23 @@ mixin option(value, name, options = {})
   - const { selected = false, disabled = false , hidden = false} = options
   option(value=`${value}`, selected=selected, disabled=disabled, hidden=hidden)= name
 
+
+
+mixin loneInput(f, property, options = { as: 'text' })
+  - const label = options.label || _.capitalize(property)
+  - const value = f.object[property] === undefined ? '' : f.object[property]
+  - const name = options.pureNames ? property : getInputName(f, property);
+  input.form-control(name=name class=`${validClassName(f, property)}` type=options['as'] value=`${value}`)
+  if options.help
+    small= options.help
+  if f.errors[property]
+    .invalid-feedback= f.errors[property].map(({ message }) => message).join('. ')
+
+mixin loneSelect(f, property, options = { multiple: false })
+  // options could have boolean property [multiple], and property [label] to set custom label
+  - const label = options.label || _.capitalize(property)
+  - const name = options.pureNames ? property : getInputName(f, property);
+  select.custom-select(name=name class=`${validClassName(f, property)}`)
+    block
+  if f.errors[property]
+    .invalid-feedback= f.errors[property].map(({ message }) => message).join('. ')

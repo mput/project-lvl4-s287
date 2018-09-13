@@ -2,7 +2,8 @@ include /mixins/forms.pug
 include /mixins/alert.pug
 include /mixins/dropdown.pug
 
-- const isActive = (url) => _.startsWith(path, url) ? 'active' : '';
+- const isActive = (url) => _.startsWith(path.toLowerCase(), url.toLowerCase()) ? 'active' : '';
+- const isSelectedOption = (mainId, id) => mainId == id;
 
 mixin navLink(url, name)
   li.nav-item
