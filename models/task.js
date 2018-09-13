@@ -1,3 +1,6 @@
+const emptyStringToNull = string => (string === '' ? null : string);
+const nullToString = val => (val === null ? '' : val);
+
 export default (sequelize, DataTypes) => {
   const Task = sequelize.define('Task', {
     name: {
@@ -10,12 +13,20 @@ export default (sequelize, DataTypes) => {
         },
       },
     },
-    description: DataTypes.TEXT,
+    description: {
+      type: DataTypes.TEXT,
+      get() {
+        return nullToString(this.getDataValue('description'));
+      },
+      set(val) {
+        this.setDataValue('description', emptyStringToNull(val));
+      },
+    },
     AssignedToId: {
       type: DataTypes.INTEGER,
       allowNull: true,
       set(val) {
-        this.setDataValue('AssignedToId', val === '' ? null : val);
+        this.setDataValue('AssignedToId', emptyStringToNull(val));
       },
     },
   });

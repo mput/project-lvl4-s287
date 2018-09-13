@@ -50,6 +50,7 @@ export default (router, container) => {
         await linkTagsToTask(tags, task);
         ctx.redirect(router.url('tasks'));
       } catch (e) {
+        log(e);
         const statuses = await Status.findAll();
         ctx.render('tasks/new', { f: buildFormObj(form, e), statuses });
       }
