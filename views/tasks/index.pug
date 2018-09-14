@@ -28,7 +28,7 @@ block content
             .form-row
               .col-md-4.mb-3
                 label Assigned to:
-                +loneInput(f, 'assignedToUser', { pureNames: true })
+                +loneInput(f, 'assignedToUser', { pureNames: true, placeholder: 'user@email.com' })
               .col-md-4.mb-3
                 label Status is:
                 +loneSelect(f, 'hasStatusId', { pureNames: true })
@@ -37,7 +37,7 @@ block content
                     +option(status.id, status.name, { selected: isSelectedOption(f.object.hasStatusId, status.id) })
               .col-md-4.mb-3
                 label Tags:
-                +loneInput(f, 'hasTags', { pureNames: true })
+                +loneInput(f, 'hasTags', { pureNames: true, placeholder: '#some #tags #here'})
               .col-md-4.mb-3
                 button.btn.btn-primary Apply
     .container-fluid.p-0.pb-4.mt-2

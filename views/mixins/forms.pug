@@ -23,7 +23,7 @@ mixin input(f, property, options = { as: 'text' })
   .form-group.row(class=(f.errors[property] && 'has-danger'))
     label.col-lg-3.col-form-label= label
     .col-lg-9
-      input.form-control(name=getInputName(f, property) class=`${validClassName(f, property)}` type=options['as'] value=`${value}`)
+      input.form-control(name=getInputName(f, property) class=`${validClassName(f, property)}` type=options['as'] value=`${value}`, placeholder=options.placeholder)
       if options.help
         small= options.help
       if f.errors[property]
@@ -80,7 +80,7 @@ mixin loneInput(f, property, options = { as: 'text' })
   - const label = options.label || _.capitalize(property)
   - const value = f.object[property] === undefined ? '' : f.object[property]
   - const name = options.pureNames ? property : getInputName(f, property);
-  input.form-control(name=name class=`${validClassName(f, property)}` type=options['as'] value=`${value}`)
+  input.form-control(name=name class=`${validClassName(f, property)}` type=options['as'] value=`${value}`, placeholder=options.placeholder)
   if options.help
     small= options.help
   if f.errors[property]

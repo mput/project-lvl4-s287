@@ -14,5 +14,5 @@ block content
               +select(f, 'StatusId', { label: 'Status' })
                 for status in statuses
                   +option(status.id, status.name, { selected: isSelectedOption(f.object.StatusId, status.id) })
-              +input(f, 'AssignedToEmail', { label: 'Assigned To', help: 'Specify an user email adress.' })
+              +input(f, 'AssignedToEmail', { label: 'Assigned To', help: 'Specify an user email adress.', placeholder: 'user@email.com' })
               +button(f, 'Save')
