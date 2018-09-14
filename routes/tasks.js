@@ -2,8 +2,10 @@ import _ from 'lodash';
 import { reqAuth } from './commonMiddlewares';
 import buildFormObj from '../lib/formObjectBuilder';
 import { Task, User, Tag, Status } from '../models'; // eslint-disable-line
-import { normilizeTag, getTags, replaceTagsWithTagLinks } from '../lib/tagUtils';
 
+const tagRegexp = /#([\w-]+)/g;
+const normilizeTag = tag => _.trimStart(tag, '#').toLowerCase();
+const getTags = str => str.match(tagRegexp) || [];
 const findOrCreateTags = async (tags) => {
   const tagsSet = new Set(tags.map(tag => normilizeTag(tag)));
   const tagObjects = await Promise.all([...tagsSet].map(tagName => Tag
@@ -12,7 +14,6 @@ const findOrCreateTags = async (tags) => {
     .catch(() => null)));
   return tagObjects.filter(tag => !!tag);
 };
-
 const linkTagsToTask = async (tags, task) => {
   await task.setTags(tags);
 };
@@ -93,7 +94,7 @@ export default (router, container) => {
         tasks,
         statuses,
         hasCustomFilter: additionatlScopes.length > 0,
-        replaceTagsWithTagLinks,
+        tagRegexp,
       });
     })
     .post('tasks', '/tasks', async (ctx) => {

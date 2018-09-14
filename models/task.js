@@ -44,8 +44,8 @@ export default (sequelize, DataTypes) => {
       include: [
         { model: models.User, as: 'Creator' },
         { model: models.User, as: 'AssignedTo' },
-        models.Tag,
         models.Status],
+      order: [['updatedAt', 'DESC']],
     });
     Task.addScope('assignedToUser', email => ({
       include: [

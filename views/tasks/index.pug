@@ -1,6 +1,14 @@
 extends /layouts/application.pug
 
+
 block content
+  -
+   const replaceTagsWithTagLinks = (string) =>
+   _.escape(string).replace(tagRegexp, (matchedTag) => {
+      const href = urlFor('getTasks', 'all', { query: { hasTags: matchedTag } });
+      return `<a href=${href}>${matchedTag}</a>`;
+    });
+
   .container-fluid.bg-light.p-0
     ul.nav.nav-tabs
       +navLink(urlFor('getTasks', 'all'), 'All tasks')
@@ -51,7 +59,7 @@ block content
                   a.btn.btn-warning.btn-sm(href=urlFor('taskEdit', { id }) role='button') Edit
                   a.btn.btn-danger.btn-sm(href=urlFor('task', { id }) role='button' data-method='delete' rel='nofollow') Delete
               td.w-50
-                h5.d-inline!= replaceTagsWithTagLinks(name, Tags)
+                h5.d-inline!= replaceTagsWithTagLinks(name)
                 p.d-inline.mb-1= description
               td= Creator.fullName
               td
