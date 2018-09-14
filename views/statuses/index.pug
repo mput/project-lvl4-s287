@@ -14,7 +14,7 @@ mixin statusCard(status)
         p.card-text
           | You have
           |
-          a.badge.badge-light(href="#")=  ammountMessage
+          a.badge.badge-light(href=urlFor('getTasks', 'all', { query: { hasStatusId: id } }))=  ammountMessage
           |  with status #[span.font-weight-bold= name].
       else
         p.card-text
