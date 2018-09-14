@@ -1,0 +1,10 @@
+extends /layouts/application.pug
+
+block content
+  .jumbotron.mt-4.text-center
+    h1.display-4 Tasker plan
+    hr.my-4
+    h5 You must be authenticated to access this page.
+    p.mt-3
+      a.mx-2.btn.btn-success.btn-lg(href=urlFor('newSession')) Log in
+      a.mx-2.btn.btn-primary.btn-lg(href=urlFor('newUser')) Sign up

@@ -42,13 +42,17 @@ export default () => {
       }
     } catch (err) {
       ctx.status = err.status || 500;
-      const message = ctx.status === 404 ? 'The page you are looking for was not found.' : err.message;
+      const message = ctx.status === 404 ? 'The page you are looking for was not found.' : 'Something wrong.';
       ctx.app.emit('error', err, ctx);
-      if (productionMode) {
-        await ctx.render('errors/error', { status: ctx.status, message });
-      } else {
+      if (devMode) {
         ctx.body = err.message;
+        return;
       }
+      if (ctx.status === 401) {
+        await ctx.render('errors/reqAuth');
+        return;
+      }
+      await ctx.render('errors/error', { status: ctx.status, message });
     }
   });
 
