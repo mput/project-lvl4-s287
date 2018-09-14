@@ -5,6 +5,8 @@ services:
   web:
     build: .
     command: make start
+    depends_on:
+      - db
     tty: true
     networks:
       - tacker-back
