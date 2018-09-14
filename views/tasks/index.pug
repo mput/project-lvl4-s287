@@ -40,35 +40,38 @@ block content
                 +loneInput(f, 'hasTags', { pureNames: true })
               .col-md-4.mb-3
                 button.btn.btn-primary Apply
-    .container-fluid.p-0.mt-2
-      h2.h4.py-1.pl-2.border-bottom All tasks:
-      table.table.table-borderless.mt-2
-        thead
-          tr
-            th(scope='col')
-            th(scope='col')
-            th(scope='col') Creator
-            th(scope='col') Assigned to
-            th(scope='col') Status
-        tbody
-          mixin taskRow(task)
-            - const { id, name, description, Creator, AssignedTo, Status, Tags } = task
-            tr.table-info.border-bottom.border-white
-              td.align-middle
-                .btn-group
-                  a.btn.btn-warning.btn-sm(href=urlFor('taskEdit', { id }) role='button') Edit
-                  a.btn.btn-danger.btn-sm(href=urlFor('task', { id }) role='button' data-method='delete' rel='nofollow') Delete
-              td.w-50
-                h5.d-inline!= replaceTagsWithTagLinks(name)
-                p.d-inline.mb-1= description
-              td= Creator.fullName
-              td
-                if AssignedTo
-                  = AssignedTo.fullName
-                else
-                  Task is not assigned yet.
-              td.align-middle.text-center.bg-info
-                p.h5.text-white= Status.name
+    .container-fluid.p-0.pb-4.mt-2
+      h2.h4.py-1.pl-2.border-bottom Tasks:
+      if tasks.length > 0
+        table.table.table-borderless.mt-2
+          thead
+            tr
+              th(scope='col')
+              th(scope='col')
+              th(scope='col') Creator
+              th(scope='col') Assigned to
+              th(scope='col') Status
+          tbody
+            mixin taskRow(task)
+              - const { id, name, description, Creator, AssignedTo, Status, Tags } = task
+              tr.table-info.border-bottom.border-white
+                td.align-middle
+                  .btn-group
+                    a.btn.btn-warning.btn-sm(href=urlFor('taskEdit', { id }) role='button') Edit
+                    a.btn.btn-danger.btn-sm(href=urlFor('task', { id }) role='button' data-method='delete' rel='nofollow') Delete
+                td.w-50
+                  h5.d-inline!= replaceTagsWithTagLinks(name)
+                  p.d-inline.mb-1= description
+                td= Creator.fullName
+                td
+                  if AssignedTo
+                    = AssignedTo.fullName
+                  else
+                    Task is not assigned yet.
+                td.align-middle.text-center.bg-info
+                  p.h5.text-white= Status.name
 
-          for task in tasks
-            +taskRow(task)
+            for task in tasks
+              +taskRow(task)
+      else
+        h4.p-4 No such tasks. :(

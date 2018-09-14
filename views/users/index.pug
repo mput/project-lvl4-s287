@@ -3,13 +3,6 @@ extends /layouts/application.pug
 block content
   .container.bg-white.border.rounded
     h2.h4.mt-3.py-1.pl-2.border-bottom Users:
-      // div.ml-auto.text-secondary
-      //   span.font-weight-bold.mr-1 Sort By:
-      //   .btn-group
-      //     +dropdownGroup('name')
-      //     .dropdown-menu
-      //       +dropdownItem('email', 'wmail')
-      //       +dropdownItem('email', 'email')
     .container
       table.mx-auto.table.table-hover.mt-3
         thead.table-borderless
@@ -27,6 +20,6 @@ block content
               td
                 a(href=`mailto:${user.email}`)= user.email
               td
-                a(href='#')= `${createdTasksCount} tasks`
+                a(href=urlFor('getTasks', 'all', { query: { createdByUser: user.email } }))= `${createdTasksCount} tasks`
               td
-                a(href='#')= `${assignedTasksCount} tasks`
+                a(href=urlFor('getTasks', 'all', { query: { assignedToUser: user.email } }))= `${assignedTasksCount} tasks`
