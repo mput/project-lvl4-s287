@@ -29,9 +29,13 @@ const getCookie = async () => {
 };
 
 describe('Basic request', () => {
-  it('GET 200', async (done) => {
+  it('get root', async (done) => {
     const res = await request(app).get('/');
     expect(res.status).toBe(200);
+    const authRes = await request(app)
+      .get('/')
+      .set('Cookie', getCookie());
+    expect(authRes.status).toBe(200);
     if (res.error) {
       throw res.error;
     }

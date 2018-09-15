@@ -158,6 +158,12 @@ describe('Tasks', () => {
       .set('cookie', cookie);
     expect(res.status).toBe(200);
   });
+  it('get tasks with filters', async () => {
+    const res = await request(app)
+      .get('/tasks/my?assignedToUser=johnson%40me.com&hasStatusId=1&hasTags=%23Tags')
+      .set('cookie', cookie);
+    expect(res.status).toBe(200);
+  });
   it('attempt to get tasks unauthorized', async () => {
     const res = await request(app).get('/tasks');
     expect(res.status).toBe(401);

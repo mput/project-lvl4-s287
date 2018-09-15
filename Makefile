@@ -48,7 +48,7 @@ compose-build:
 	docker-compose build
 
 compose-test:
-	docker-compose run web make test
+	docker-compose run web make test-coverage
 
 compose-test-watch:
 	docker-compose run web make test-watch
