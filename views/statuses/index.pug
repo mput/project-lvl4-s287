@@ -4,10 +4,12 @@ mixin statusCard(status)
   - const { name, id } = status
   - const tasksCount = status.get('tasksCount')
   - const ammountMessage = tasksCount === 1 ? `${tasksCount} task` : `${tasksCount} tasks`
-  .card.text-center
+  .card.text-center.h-100
     .card-header.bg-info.text-white
-      h4= name
+      h4.d-inline= name
       if status.default
+        |
+        |
         span.badge.badge-dark default
     .card-body
       if tasksCount != 0
@@ -27,12 +29,13 @@ mixin statusCard(status)
 block content
     .container.bg-white.border.rounded
       .row.mt-4.mb-2
-        .col.flex-grow-0
-          button.btn.btn-success(data-toggle='modal' data-target='#addNewStatusModal') New status
-      h2.h4.py-1.pl-2.border-bottom Statuses:
-      .card-columns.mt-3
+        .col.d-flex
+          button.ml-auto.btn.btn-success(data-toggle='modal' data-target='#addNewStatusModal') New status
+      h2.h4.pb-1.pl-2.mb-3.mt-1.border-bottom Statuses:
+      .row
         for status in statuses
-          +statusCard(status)
+          .col-12.col-sm-6.col-md-4.mb-4
+            +statusCard(status)
 
     .modal.fade#addNewStatusModal(tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true')
       .modal-dialog(role='document')
