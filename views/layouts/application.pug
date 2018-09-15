@@ -21,7 +21,7 @@ html(lang="en")
     .container-fluid.p-0.h-100
       .container-fluid.bg-dark
         nav.navbar.navbar-expand-md.navbar-dark.container
-          a.navbar-brand(href='/') Tasker Plan
+          a.navbar-brand(href=urlFor('root')) Tasker Plan
           button.navbar-toggler(type="button" data-toggle="collapse" data-target="#navbarSupportedContent")
             span.navbar-toggler-icon
           .collapse.navbar-collapse#navbarSupportedContent
@@ -40,11 +40,9 @@ html(lang="en")
                 +navLink(urlFor('newSession'), 'Sign In')
                 +navLink(urlFor('newUser'), 'Sign Up')
 
-      main.container.mt-4
+      main.container.mt-4.px-0.px-sm-4
         - const msg = flash.get()
         if msg
           +alert(msg, 'info')
-
         block content
-
-      script(src='/assets/app.js')
+    script(src='/assets/app.js')

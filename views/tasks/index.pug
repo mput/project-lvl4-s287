@@ -1,27 +1,16 @@
 extends /layouts/application.pug
 
-
 block content
-  -
-   const replaceTagsWithTagLinks = (string) =>
-   _.escape(string).replace(tagRegexp, (matchedTag) => {
-      const href = urlFor('getTasks', 'all', { query: { hasTags: matchedTag } });
-      return `<a href=${href}>${matchedTag}</a>`;
-    });
-
-  .container-fluid.bg-light.p-0
+  .container.bg-light.p-0
     ul.nav.nav-tabs
       +navLink(urlFor('getTasks', 'all'), 'All tasks')
       +navLink(urlFor('getTasks', 'my'), 'My tasks')
       +navLink(urlFor('getTasks', 'forme'), 'For me')
-  .container.bg-white.border.border-top-0.rounded
-    .row.pt-4
-      .col.flex-grow-0
-        a.btn.btn-success(href=urlFor('newTask') role='button') New task
-    .row.rounded-bottom.pt-3
-      .col
-        p.m-0
-          a.dropdown-toggle(data-toggle='collapse' href='#formCollapse' role='button' aria-expanded='false' aria-controls='formCollapse') Filters
+  .container.bg-white.border.border-top-0.rounded.mb-4.pb-2
+    .row.pt-4.px-2
+      .col.d-flex
+        a.d-inline.align-bottom.dropdown-toggle(data-toggle='collapse' href='#formCollapse' role='button' aria-expanded='false' aria-controls='formCollapse') Filters
+        a.ml-auto.btn.btn-success(href=urlFor('newTask') role='button') New task
     .row.rounded-bottom.collapse#formCollapse(class= hasCustomFilter && 'show')
       .col
         +formFor(f, { url: path })
@@ -40,38 +29,45 @@ block content
                 +loneInput(f, 'hasTags', { pureNames: true, placeholder: '#some #tags #here'})
               .col-md-4.mb-3
                 button.btn.btn-primary Apply
-    .container-fluid.p-0.pb-4.mt-2
-      h2.h4.py-1.pl-2.border-bottom Tasks:
-      if tasks.length > 0
-        table.table.table-borderless.mt-2
-          thead
-            tr
-              th(scope='col')
-              th(scope='col')
-              th(scope='col') Creator
-              th(scope='col') Assigned to
-              th(scope='col') Status
-          tbody
-            mixin taskRow(task)
-              - const { id, name, description, Creator, AssignedTo, Status, Tags } = task
-              tr.table-info.border-bottom.border-white
-                td.align-middle
-                  .btn-group
-                    a.btn.btn-warning.btn-sm(href=urlFor('taskEdit', { id }) role='button') Edit
-                    a.btn.btn-danger.btn-sm(href=urlFor('task', { id }) role='button' data-method='delete' rel='nofollow') Delete
-                td.w-50
-                  h5.d-inline!= replaceTagsWithTagLinks(name)
-                  p.d-inline.mb-1= description
-                td= Creator.fullName
-                td
-                  if AssignedTo
-                    = AssignedTo.fullName
-                  else
-                    Task is not assigned yet.
-                td.align-middle.text-center.bg-info
-                  p.h5.text-white= Status.name
+    .container.p-0
+      h2.h4.pb-1.pl-2.mb-3.mt-1.border-bottom Tasks:
+      mixin taskItem(task)
+        - const { id, name, description, Creator, AssignedTo, Status, Tags } = task
+        - const buildEmailTooltip = user => `Email: <a href= mailto:${_.escape(user.email)}>${_.escape(user.email)}<\a>`
+        -
+         const replaceTagsWithTagLinks = (string) =>
+         _.escape(string).replace(tagRegexp, (matchedTag) => {
+            const href = urlFor('getTasks', 'all', { query: { hasTags: matchedTag } });
+            return `<a href=${href}>${matchedTag}</a>`;
+          });
 
-            for task in tasks
-              +taskRow(task)
+        .row.mx-1.mx-sm-4.my-2.py-2.border.rounded.bg-light
+          .col-12.mb-1.order-1.order-md-first.col-md-3.col-lg-2
+            p.mb-1.text-nowrap
+              span
+                | by:
+                |
+              a.badge.badge-secondary(href='#' data-toggle="tooltip" data-html="true" title=buildEmailTooltip(Creator))= Creator.fullName
+            p.m-0.text-nowrap
+              span
+                | for:
+                |
+              if AssignedTo
+                a.badge.badge-secondary(href='#' data-toggle="tooltip" data-html="true" title=buildEmailTooltip(Creator))= AssignedTo.fullName
+              else
+                span n/a
+          .col-12.col-sm.mb-1
+            h6.mb-1
+              a.p-1.mr-2.badge.badge-info.text-white(href=urlFor('getTasks', 'all', { query: { hasStatusId: Status.id } }))= Status.name
+              span!= replaceTagsWithTagLinks(name)
+            p.mb-1.text-muted= description
+          .col-12.order-1.col-sm-auto
+            .btn-group.my-2
+              a.btn.btn-warning.btn-sm(href=urlFor('taskEdit', { id }) role='button') Edit
+              a.btn.btn-danger.btn-sm(href=urlFor('task', { id }) role='button' data-method='delete' rel='nofollow') Delete
+
+      if tasks.length > 0
+        for task in tasks
+          +taskItem(task)
       else
         h4.p-4 No such tasks. :(
