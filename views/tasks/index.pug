@@ -1,5 +1,40 @@
 extends /layouts/application.pug
 
+mixin taskItem(task)
+  - const { id, name, description, Creator, AssignedTo, Status, Tags } = task
+  - const buildEmailTooltip = user => `Email: <a href= mailto:${_.escape(user.email)}>${_.escape(user.email)}<\a>`
+  -
+   const replaceTagsWithTagLinks = (string) =>
+   _.escape(string).replace(tagRegexp, (matchedTag) => {
+      const href = urlFor('getTasks', 'all', { query: { hasTags: matchedTag } });
+      return `<a href=${href}>${matchedTag}</a>`;
+    });
+
+  .row.mx-1.mx-sm-4.my-2.py-2.border.rounded.bg-light
+    .col-12.col-md.mb-1
+      h5.mb-1
+        a.p-1.mr-2.badge.badge-info.text-white(href=urlFor('getTasks', 'all', { query: { hasStatusId: Status.id } }))= Status.name
+        span!= replaceTagsWithTagLinks(name)
+      p.mb-1.text-muted= description
+    .col-6.mx-0.mb-1.col-md-auto
+      p.mb-1.text-nowrap.text-md-right
+        span
+          | by:
+          |
+        a.badge.badge-secondary(href='#' data-toggle="tooltip" data-html="true" title=buildEmailTooltip(Creator))= Creator.fullName
+      p.m-0.text-nowrap.text-md-right
+        span
+          | for:
+          |
+        if AssignedTo
+          a.badge.badge-secondary(href='#' data-toggle="tooltip" data-html="true" title=buildEmailTooltip(AssignedTo))= AssignedTo.fullName
+        else
+          span n/a
+    .col-auto.ml-auto
+      .btn-group.my-1
+        a.btn.btn-warning.btn-sm(href=urlFor('taskEdit', { id }) role='button') Edit
+        a.btn.btn-danger.btn-sm(href=urlFor('task', { id }) role='button' data-method='delete' rel='nofollow') Delete
+
 block content
   .container.bg-light.p-0
     ul.nav.nav-tabs
@@ -15,9 +50,10 @@ block content
       .col
         +formFor(f, { url: path })
             .form-row
-              .col-md-4.mb-3
-                label Assigned to:
-                +loneInput(f, 'assignedToUser', { pureNames: true, placeholder: 'user@email.com' })
+              if !isActive(urlFor('getTasks', 'forme'))
+                .col-md-4.mb-3
+                  label Assigned to:
+                  +loneInput(f, 'assignedToUser', { pureNames: true, placeholder: 'user@email.com' })
               .col-md-4.mb-3
                 label Status is:
                 +loneSelect(f, 'hasStatusId', { pureNames: true })
@@ -27,45 +63,10 @@ block content
               .col-md-4.mb-3
                 label Tags:
                 +loneInput(f, 'hasTags', { pureNames: true, placeholder: '#some #tags #here'})
-              .col-md-4.mb-3
+              .col-12.mb-3
                 button.btn.btn-primary Apply
     .container.p-0
       h2.h4.pb-1.pl-2.mb-3.mt-1.border-bottom Tasks:
-      mixin taskItem(task)
-        - const { id, name, description, Creator, AssignedTo, Status, Tags } = task
-        - const buildEmailTooltip = user => `Email: <a href= mailto:${_.escape(user.email)}>${_.escape(user.email)}<\a>`
-        -
-         const replaceTagsWithTagLinks = (string) =>
-         _.escape(string).replace(tagRegexp, (matchedTag) => {
-            const href = urlFor('getTasks', 'all', { query: { hasTags: matchedTag } });
-            return `<a href=${href}>${matchedTag}</a>`;
-          });
-
-        .row.mx-1.mx-sm-4.my-2.py-2.border.rounded.bg-light
-          .col-12.mb-1.order-1.order-md-first.col-md-3.col-lg-2
-            p.mb-1.text-nowrap
-              span
-                | by:
-                |
-              a.badge.badge-secondary(href='#' data-toggle="tooltip" data-html="true" title=buildEmailTooltip(Creator))= Creator.fullName
-            p.m-0.text-nowrap
-              span
-                | for:
-                |
-              if AssignedTo
-                a.badge.badge-secondary(href='#' data-toggle="tooltip" data-html="true" title=buildEmailTooltip(Creator))= AssignedTo.fullName
-              else
-                span n/a
-          .col-12.col-sm.mb-1
-            h6.mb-1
-              a.p-1.mr-2.badge.badge-info.text-white(href=urlFor('getTasks', 'all', { query: { hasStatusId: Status.id } }))= Status.name
-              span!= replaceTagsWithTagLinks(name)
-            p.mb-1.text-muted= description
-          .col-12.order-1.col-sm-auto
-            .btn-group.my-2
-              a.btn.btn-warning.btn-sm(href=urlFor('taskEdit', { id }) role='button') Edit
-              a.btn.btn-danger.btn-sm(href=urlFor('task', { id }) role='button' data-method='delete' rel='nofollow') Delete
-
       if tasks.length > 0
         for task in tasks
           +taskItem(task)
