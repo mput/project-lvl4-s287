@@ -1,10 +1,13 @@
+const dotenv = require('dotenv');
+
+dotenv.config();
 module.exports = {
   development: {
     database: 'tasker-plan',
     dialect: 'postgres',
     host: 'db',
     username: 'root',
-    password: 'pgpass',
+    password: process.env.DB_PASS,
   },
   test: {
     database: 'database_test',
