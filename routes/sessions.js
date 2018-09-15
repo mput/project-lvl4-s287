@@ -10,9 +10,10 @@ export default (router, container) => {
       ctx.render('sessions/new', { f: buildFormObj(data) });
     })
     .post('session', '/session', async (ctx) => {
-      const { email, password } = ctx.request.body.form;
-
-      log('Try to log with %s', email);
+      const { form } = ctx.request.body;
+      form.email = form.email.toLowerCase();
+      const { email, password } = form;
+      log('Attempt to login with %s', email);
       const user = await User.findOne({
         where: {
           email,

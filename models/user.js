@@ -15,6 +15,9 @@ export default (sequelize, DataTypes) => {
           msg: 'That doesn\'t looks like an email address',
         },
       },
+      set(val) {
+        this.setDataValue('email', val.toLowerCase());
+      },
     },
     passwordDigest: {
       type: DataTypes.STRING,
