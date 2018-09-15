@@ -65,9 +65,7 @@ export default (sequelize, DataTypes) => {
         {
           model: models.Tag,
           where: {
-            name: {
-              [Op.in]: tags,
-            },
+            name: { [Op.in]: tags },
           },
         },
       ],
