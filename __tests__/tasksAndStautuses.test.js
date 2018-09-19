@@ -179,7 +179,7 @@ describe('Tasks', () => {
       name: 'Test task #with #new_tag',
       description: 'Has description #tag',
       StatusId: '1',
-      AssignedToEmail: 'karen@mail.com',
+      AssignedToId: '3',
     };
     const res = await request(app)
       .post('/tasks')

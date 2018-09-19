@@ -14,5 +14,9 @@ block content
               +select(f, 'StatusId', { label: 'Status' })
                 for status in statuses
                   +option(status.id, status.name)
-              +input(f, 'AssignedToEmail', { label: 'Assigned To', help: 'Specify an user email adress.', placeholder: 'user@email.com' })
+              +select(f, 'AssignedToId', { label: 'Assigned to' })
+                +option('', 'Choose an user:', { disabled: true, selected: true , hidden: true })
+                for user in users
+                  +option(user.id, user.fullName)
+                +option('', 'Don\'t assign task')
               +button(f, 'Create')

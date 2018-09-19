@@ -72,15 +72,5 @@ export default (sequelize, DataTypes) => {
     }));
   };
 
-  Task.addMethods = (models) => {
-    Task.prototype.setAssocitation = async function({ model, as, querry, error }) { // eslint-disable-line
-      const association = await models[model].findOne(querry);
-      if (!association) {
-        const validationError = new models.Sequelize.ValidationErrorItem(error.message, 'Validation error', error.path, querry);
-        throw new models.Sequelize.ValidationError('customValidationError', [validationError]);
-      }
-      this[`set${as || model}`](association);
-    };
-  };
   return Task;
 };

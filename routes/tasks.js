@@ -68,7 +68,8 @@ export default (router, container) => {
     .get('newTask', '/tasks/new', async (ctx) => {
       const task = Task.build();
       const statuses = await Status.findAll();
-      ctx.render('tasks/new', { f: buildFormObj(task), statuses });
+      const users = await User.findAll();
+      ctx.render('tasks/new', { f: buildFormObj(task), statuses, users });
     })
     .get('getTasks', '/tasks/:mainFilter?', async (ctx) => {
       const { mainFilter } = ctx.params;
@@ -102,17 +103,6 @@ export default (router, container) => {
       const task = Task.build(form);
       task.setCreator(ctx.state.signedUser);
       try {
-        if (form.AssignedToEmail) {
-          await task.setAssocitation({
-            model: 'User',
-            as: 'AssignedTo',
-            querry: { where: { email: form.AssignedToEmail } },
-            error: {
-              message: 'Can\'t find such user',
-              path: 'AssignedToEmail',
-            },
-          });
-        }
         await task.save();
         const tags = await findOrCreateTags(getTags(form.name));
         await linkTagsToTask(tags, task);
@@ -120,7 +110,8 @@ export default (router, container) => {
       } catch (e) {
         log(e);
         const statuses = await Status.findAll();
-        ctx.render('tasks/new', { f: buildFormObj(form, e), statuses });
+        const users = await User.findAll();
+        ctx.render('tasks/new', { f: buildFormObj(form, e), statuses, users });
       }
     })
     .get('taskEdit', '/tasks/:id/edit', async (ctx) => {
@@ -134,7 +125,13 @@ export default (router, container) => {
       }
       task.AssignedToEmail = task.AssignedTo ? task.AssignedTo.email : '';
       const statuses = await Status.findAll();
-      ctx.render('tasks/edit', { f: buildFormObj(task), id, statuses });
+      const users = await User.findAll();
+      ctx.render('tasks/edit', {
+        f: buildFormObj(task),
+        id,
+        statuses,
+        users,
+      });
     })
     .patch('task', '/tasks/:id', async (ctx) => {
       const { id } = ctx.params;
@@ -144,19 +141,6 @@ export default (router, container) => {
       }
       const { form } = ctx.request.body;
       try {
-        if (form.AssignedToEmail) {
-          await task.setAssocitation({
-            model: 'User',
-            as: 'AssignedTo',
-            querry: { where: { email: form.AssignedToEmail } },
-            error: {
-              message: 'Can\'t find such user',
-              path: 'AssignedToEmail',
-            },
-          });
-        } else {
-          task.setAssignedTo(null);
-        }
         await task.update(form);
         const tags = await findOrCreateTags(getTags(form.name));
         await linkTagsToTask(tags, task);
@@ -164,7 +148,13 @@ export default (router, container) => {
         ctx.redirect(router.url('getTasks', 'all'));
       } catch (e) {
         const statuses = await Status.findAll();
-        ctx.render('tasks/edit', { f: buildFormObj(form, e), id, statuses });
+        const users = await User.findAll();
+        ctx.render('tasks/edit', {
+          f: buildFormObj(form, e),
+          id,
+          statuses,
+          users,
+        });
       }
     })
     .delete('task', '/tasks/:id', async (ctx) => {
