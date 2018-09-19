@@ -23,7 +23,7 @@ mixin statusCard(status)
           | You didn't have any card with status #[span.font-weight-bold= name].
       .btn-group
         a.btn.btn-warning.btn-sm(href=urlFor('statusEdit', { id }) role='button') Edit
-        a.btn.btn-danger.btn-sm(href=urlFor('status', { id }) role='button' data-method='delete' rel='nofollow') Delete
+        a.btn.btn-danger.btn-sm(href=urlFor('status', { id }) role='button' data-method='delete' rel='nofollow' data-confirm='Are you sure?') Delete
 
 
 block content

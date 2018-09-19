@@ -33,7 +33,7 @@ mixin taskItem(task)
     .col-auto.ml-auto
       .btn-group.my-1
         a.btn.btn-warning.btn-sm(href=urlFor('taskEdit', { id }) role='button') Edit
-        a.btn.btn-danger.btn-sm(href=urlFor('task', { id }) role='button' data-method='delete' rel='nofollow') Delete
+        a.btn.btn-danger.btn-sm(href=urlFor('task', { id }) role='button' data-method='delete' rel='nofollow' data-confirm='Are you sure?') Delete
 
 block content
   .container.bg-light.p-0
