@@ -3,11 +3,13 @@ include /mixins/alert.pug
 include /mixins/dropdown.pug
 
 - const isActive = (url) => _.startsWith(path.toLowerCase(), url.toLowerCase()) ? 'active' : '';
+- const isActiveEqual = (url) => path.toLowerCase() === url.toLowerCase() ? 'active' : '';
 - const isSelectedOption = (mainId, id) => mainId == id;
 
-mixin navLink(url, name)
+mixin navLink(url, name, equalActive = false)
+  - const equalFunc = equalActive ? isActiveEqual : isActive
   li.nav-item
-    a.nav-link(class=isActive(url) href=url)= name
+    a.nav-link(class=equalFunc(url) href=url)= name
 
 
 doctype html

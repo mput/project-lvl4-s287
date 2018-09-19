@@ -43,7 +43,7 @@ const scopeBuilders = [
   },
   {
     getMethod: () => 'defaultScope',
-    path: 'all',
+    path: '',
     name: 'defaultScope',
     valueProc: _.identity,
   },
@@ -72,11 +72,7 @@ export default (router, container) => {
       ctx.render('tasks/new', { f: buildFormObj(task), statuses, users });
     })
     .get('getTasks', '/tasks/:mainFilter?', async (ctx) => {
-      const { mainFilter } = ctx.params;
-      if (!mainFilter) {
-        ctx.redirect(router.url('getTasks', 'all'));
-        return;
-      }
+      const mainFilter = ctx.params.mainFilter || '';
       const mainScopeObj = _.find(scopeBuilders,
         filter => filter.path === mainFilter.toLowerCase());
       if (!mainScopeObj) {
@@ -106,7 +102,7 @@ export default (router, container) => {
         await task.save();
         const tags = await findOrCreateTags(getTags(form.name));
         await linkTagsToTask(tags, task);
-        ctx.redirect(router.url('tasks', 'all'));
+        ctx.redirect(router.url('tasks'));
       } catch (e) {
         log(e);
         const statuses = await Status.findAll();
@@ -145,7 +141,7 @@ export default (router, container) => {
         const tags = await findOrCreateTags(getTags(form.name));
         await linkTagsToTask(tags, task);
         ctx.flash.set('Task has been edited');
-        ctx.redirect(router.url('getTasks', 'all'));
+        ctx.redirect(router.url('getTasks'));
       } catch (e) {
         const statuses = await Status.findAll();
         const users = await User.findAll();
@@ -162,6 +158,6 @@ export default (router, container) => {
       const task = await Task.findById(id);
       await task.destroy();
       ctx.flash.set('Task has been deleted');
-      ctx.redirect(router.url('getTasks', 'all'));
+      ctx.redirect(router.url('getTasks'));
     });
 };

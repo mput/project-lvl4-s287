@@ -6,14 +6,14 @@ mixin taskItem(task)
   -
    const replaceTagsWithTagLinks = (string) =>
    _.escape(string).replace(tagRegexp, (matchedTag) => {
-      const href = urlFor('getTasks', 'all', { query: { hasTags: matchedTag } });
+     const href = urlFor('getTasks', {}, { query: { hasTags: matchedTag } });
       return `<a href=${href}>${matchedTag}</a>`;
     });
 
   .row.mx-1.mx-sm-4.my-2.py-2.border.rounded.bg-light
     .col-12.col-md.mb-1
       h5.mb-1
-        a.p-1.mr-2.badge.badge-info.text-white(href=urlFor('getTasks', 'all', { query: { hasStatusId: Status.id } }))= Status.name
+        a.p-1.mr-2.badge.badge-info.text-white(href=urlFor('getTasks', {}, { query: { hasStatusId: Status.id } }))= Status.name
         span!= replaceTagsWithTagLinks(name)
       p.mb-1.text-muted= description
     .col-6.mx-0.mb-1.col-md-auto
@@ -38,7 +38,7 @@ mixin taskItem(task)
 block content
   .container.bg-light.p-0
     ul.nav.nav-tabs
-      +navLink(urlFor('getTasks', 'all'), 'All tasks')
+      +navLink(urlFor('getTasks'), 'All tasks', true)
       +navLink(urlFor('getTasks', 'my'), 'My tasks')
       +navLink(urlFor('getTasks', 'forme'), 'For me')
   .container.bg-white.border.border-top-0.rounded.mb-4.pb-2

@@ -154,7 +154,7 @@ describe('Statuses', () => {
 describe('Tasks', () => {
   it('get tasks', async () => {
     const res = await request(app)
-      .get('/tasks/all')
+      .get('/tasks')
       .set('cookie', cookie);
     expect(res.status).toBe(200);
   });

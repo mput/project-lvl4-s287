@@ -20,6 +20,6 @@ block content
               td
                 a(href=`mailto:${user.email}`)= user.email
               td
-                a(href=urlFor('getTasks', 'all', { query: { createdByUser: user.email } }))= `${createdTasksCount} tasks`
+                a(href=urlFor('getTasks', {}, { query: { createdByUser: user.email } }))= `${createdTasksCount} tasks`
               td
-                a(href=urlFor('getTasks', 'all', { query: { assignedToUser: user.email } }))= `${assignedTasksCount} tasks`
+                a(href=urlFor('getTasks', {}, { query: { assignedToUser: user.email } }))= `${assignedTasksCount} tasks`
