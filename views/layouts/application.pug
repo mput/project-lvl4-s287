@@ -4,7 +4,7 @@ include /mixins/dropdown.pug
 
 - const isActive = (url) => _.startsWith(path.toLowerCase(), url.toLowerCase()) ? 'active' : '';
 - const isActiveEqual = (url) => path.toLowerCase() === url.toLowerCase() ? 'active' : '';
-- const isSelectedOption = (mainId, id) => mainId == id;
+- const isSelectedOption = (mainId, id) => String(mainId) === String(id);
 
 mixin navLink(url, name, equalActive = false)
   - const equalFunc = equalActive ? isActiveEqual : isActive
