@@ -10,9 +10,8 @@ const findOrCreateTags = async (tags) => {
   const tagsSet = new Set(tags.map(tag => normilizeTag(tag)));
   const tagObjects = await Promise.all([...tagsSet].map(tagName => Tag
     .findOrCreate({ where: { name: tagName } })
-    .then(([tag]) => tag)
     .catch(() => null)));
-  return tagObjects.filter(tag => !!tag);
+  return tagObjects.filter(tag => !!tag).map(([tag]) => tag);
 };
 const linkTagsToTask = async (tags, task) => {
   await task.setTags(tags);
